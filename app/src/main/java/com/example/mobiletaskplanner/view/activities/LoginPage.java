@@ -23,7 +23,7 @@ import com.example.mobiletaskplanner.db.SQLLiteConnectionHelper;
 import com.example.mobiletaskplanner.models.AccountContract;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
-import com.example.mobiletaskplanner.viewmodels.SplashViewModel;
+import com.example.mobiletaskplanner.view.viewmodels.SplashViewModel;
 
 public class LoginPage extends AppCompatActivity {
 

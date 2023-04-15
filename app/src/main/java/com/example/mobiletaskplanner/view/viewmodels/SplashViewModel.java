@@ -1,4 +1,4 @@
-package com.example.mobiletaskplanner.viewmodels;
+package com.example.mobiletaskplanner.view.viewmodels;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

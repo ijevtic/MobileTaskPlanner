@@ -9,4 +9,13 @@
     <string name="username_wrong_info">Username should have at least 3 characters</string>
     <string name="password_wrong_info">Password should not have any special characters (~#^|$%&amp;*!), should be of length >= 5, with at least one capital letter and at least one digit</string>
     <string name="invalid_credentials">Invalid credentials</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="MondayShort">Mon</string>
+    <string name="TuesdayShort">Tue</string>
+    <string name="WednesdayShort">Wed</string>
+    <string name="ThursdayShort">Thu</string>
+    <string name="FridayShort">Fri</string>
+    <string name="SaturdayShort">Sat</string>
+    <string name="SundayShort">Sun</string>
 </resources>
