@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MobileTaskPlanner</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="this_is_a_required_field">This is a required field.</string>
+    <string name="email_wrong_info">Email in wrong format</string>
+    <string name="username_wrong_info">Username should have at least 3 characters</string>
+    <string name="password_wrong_info">Password should not have any special characters (~#^|$%&amp;*!), should be of length >= 5, with at least one capital letter and at least one digit</string>
+</resources>
