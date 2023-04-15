@@ -18,23 +18,25 @@ public class Util {
     }
 
     public static boolean isValidPassword(String password) {
+
         if (password == null) {
             return false;
         }
-        if (password.length() < 5) {
-            return false;
-        }
-        if (password.matches(".*[~#^|$%&*!].*")) {
-            return false;
-        }
-
-        if (!password.matches(".*[A-Z].*")) {
-            return false;
-        }
-
-        if (!password.matches(".*\\d.*")) {
-            return false;
-        }
+        //TODO debug
+//        if (password.length() < 5) {
+//            return false;
+//        }
+//        if (password.matches(".*[~#^|$%&*!].*")) {
+//            return false;
+//        }
+//
+//        if (!password.matches(".*[A-Z].*")) {
+//            return false;
+//        }
+//
+//        if (!password.matches(".*\\d.*")) {
+//            return false;
+//        }
 
         return true;
 

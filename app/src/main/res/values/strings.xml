@@ -8,4 +8,5 @@
     <string name="email_wrong_info">Email in wrong format</string>
     <string name="username_wrong_info">Username should have at least 3 characters</string>
     <string name="password_wrong_info">Password should not have any special characters (~#^|$%&amp;*!), should be of length >= 5, with at least one capital letter and at least one digit</string>
+    <string name="invalid_credentials">Invalid credentials</string>
 </resources>
