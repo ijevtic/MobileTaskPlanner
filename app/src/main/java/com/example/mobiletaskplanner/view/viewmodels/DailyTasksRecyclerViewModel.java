@@ -36,6 +36,14 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
         mutableLiveDataTasks.setValue(listToSubmit);
     }
 
+    public void addTask(Task task) {
+        tasks.add(task);
+        ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
+        mutableLiveDataTasks.setValue(listToSubmit);
+    }
+
+
+
 //    public Task getDateTasks(int id) {
 //        Optional<Task> taskObject = tasks.stream().filter(dateTasks -> dateTasks.() == id).findFirst();
 //        return dateTasksObject.orElse(null);

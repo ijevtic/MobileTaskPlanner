@@ -69,6 +69,11 @@ public class ManageTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Task task = getTaskFromInput();
+                Intent intent = new Intent();
+                intent.putExtra(Constants.TASK_CODE_EDIT, task);
+                intent.putExtra(Constants.TASK_CODE, Constants.TASK_CODE_EDIT);
+                getActivity().setResult(Constants.RESULT_OK, intent);
+                getActivity().finish();
                 Log.d("ManageTaskFragment", "Save button clicked");
             }
         });
@@ -76,9 +81,11 @@ public class ManageTaskFragment extends Fragment {
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO check overlapping, empty fields
                 Task task = getTaskFromInput();
                 Intent intent = new Intent();
-                intent.putExtra(Constants.TASK_CODE, task);
+                intent.putExtra(Constants.TASK_CODE_ADD, task);
+                intent.putExtra(Constants.TASK_CODE, Constants.TASK_CODE_ADD);
                 getActivity().setResult(Constants.RESULT_OK, intent);
                 getActivity().finish();
                 Log.d("ManageTaskFragment", "Create button clicked");

@@ -100,8 +100,8 @@ public class DailyPlanFragment extends Fragment {
         initListeners();
 
 //        List<Task> dates = printDatesInMonth(2018, 1);
-        recyclerViewModel.addTask("Task 1", 5, 6, "lol");
-        recyclerViewModel.addTask("Task 2", 7, 8, "lol");
+//        recyclerViewModel.addTask("Task 1", 5, 6, "lol");
+//        recyclerViewModel.addTask("Task 2", 7, 8, "lol");
 
 
     }
@@ -144,7 +144,13 @@ public class DailyPlanFragment extends Fragment {
                         if (result.getResultCode() == Constants.RESULT_OK) {
                             // There are no request codes
                             Intent data = result.getData();
-                            Toast.makeText(getContext(), "Task added", Toast.LENGTH_SHORT).show();
+                            String taskType = data.getStringExtra(Constants.TASK_CODE);
+                            if(taskType.equals(Constants.TASK_CODE_ADD)) {
+                                Task task = (Task) data.getSerializableExtra(Constants.TASK_ACTION_TYPE_ADD);
+                                recyclerViewModel.addTask("Task 7", 7, 8, "lol");
+//                                recyclerViewModel.addTask(task);
+                                Toast.makeText(getContext(), "Task added", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });

@@ -8,6 +8,9 @@ public class Constants {
     public static final String TASK_ACTION_TYPE_VIEW = "view";
     public static final String TASK_CODE = "taskCode";
 
+    public static final String TASK_CODE_ADD = "taskCodeAdd";
+    public static final String TASK_CODE_EDIT = "taskCodeEdit";
+
     public static final Integer RESULT_OK = 1;
     public static final Integer RESULT_CANCEL = 0;
 }
