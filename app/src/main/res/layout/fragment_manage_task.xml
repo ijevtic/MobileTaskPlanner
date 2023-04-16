@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:textAlignment="center"
+            android:background="@color/teal_700"
+            android:textSize="20sp"
+            android:text="March 29. 2023."
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/black">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="@string/low_priority_task"
+                android:background="@color/task_priority_low"
+                android:layout_marginEnd="2dp">
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="@string/mid_priority_task"
+                android:background="@color/task_priority_medium"
+                >
+            </TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="@string/high_priority_task"
+                android:background="@color/task_priority_high"
+                android:layout_marginStart="2dp">
+            </TextView>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/mt_task_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:background="@color/teal_200"
+            android:hint="@string/title"
+            android:textSize="20sp"
+            />
+
+        <EditText
+            android:id="@+id/mt_task_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:background="@color/teal_200"
+            android:hint="@string/time"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/mt_task_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:gravity="start"
+            android:background="@color/teal_200"
+            android:hint="@string/description"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/createTaskButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/create"
+            android:layout_gravity="bottom"
+            android:background="@color/teal_200"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            />
+        <Button
+            android:visibility="gone"
+            android:id="@+id/saveTaskButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/save"
+            android:layout_gravity="bottom"
+            android:background="@color/teal_200"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            />
+        <Button
+            android:id="@+id/cancelTaskButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:layout_gravity="bottom"
+            android:background="@color/teal_200"
+            android:textSize="20sp"
+            android:layout_margin="10dp"
+            />
+    </LinearLayout>
+</LinearLayout>
