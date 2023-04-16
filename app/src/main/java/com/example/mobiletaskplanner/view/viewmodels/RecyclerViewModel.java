@@ -12,15 +12,15 @@ import java.util.Optional;
 
 public class RecyclerViewModel extends ViewModel {
 
-    public static int counter = 101;
+    public static int counter = 0;
 
     private final MutableLiveData<List<DateTasks>> mutableLiveDataDates = new MutableLiveData<>();
     private List<DateTasks> dates = new ArrayList<>();
 
     public RecyclerViewModel() {
-        for(int i = 0; i < 10; i++) {
-            dates.add(new DateTasks(i, "Task " + i));
-        }
+//        for(int i = 0; i < 10; i++) {
+//            dates.add(new DateTasks(i, "Task " + i));
+//        }
 
         List<DateTasks> listToSubmit = new ArrayList<>(dates);
         mutableLiveDataDates.setValue(listToSubmit);
@@ -36,6 +36,23 @@ public class RecyclerViewModel extends ViewModel {
         dates.add(dateTasks);
         ArrayList<DateTasks> listToSubmit = new ArrayList<>(dates);
         mutableLiveDataDates.setValue(listToSubmit);
+    }
+
+    public void addDate(DateTasks dateTasks) {
+        int id = counter++;
+        dateTasks.setId(id);
+        dates.add(dateTasks);
+        ArrayList<DateTasks> listToSubmit = new ArrayList<>(dates);
+        mutableLiveDataDates.setValue(listToSubmit);
+    }
+
+    public DateTasks getDateTasks(int id) {
+        Optional<DateTasks> dateTasksObject = dates.stream().filter(dateTasks -> dateTasks.getId() == id).findFirst();
+        return dateTasksObject.orElse(null);
+    }
+
+    public int getDateCount() {
+        return dates.size();
     }
 
 //    public void removeDateTasks(int id) {

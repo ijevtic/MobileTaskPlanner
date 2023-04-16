@@ -1,9 +1,11 @@
 package com.example.mobiletaskplanner.view.fragments;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,14 +17,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.models.DateTasks;
+import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.recycler.adapter.DateAdapter;
 import com.example.mobiletaskplanner.view.recycler.differ.DateTasksDiffItemCallback;
 import com.example.mobiletaskplanner.view.viewmodels.RecyclerViewModel;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class CalendarFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerViewModel recyclerViewModel;
+    private TextView monthYearText;
 
     private DateAdapter dateAdapter;
 
@@ -44,21 +53,38 @@ public class CalendarFragment extends Fragment {
         init(view);
 
     }
+    public static List<DateTasks> printDatesInMonth(int year, int month) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(year, month - 1, 1);
+        List<DateTasks> list = new ArrayList<>();
+        for (int i = 0; i < 5000; i++) {
+            list.add(new DateTasks(String.valueOf(cal.getTime()),
+                    cal.get(Calendar.DAY_OF_MONTH),
+                    cal.get(Calendar.MONTH)+1,
+                    cal.get(Calendar.YEAR)));
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return list;
+    }
 
     private void init(View view) {
         initView(view);
         initObservers(view);
         initRecycler();
 
-        for(int i = 0; i < 600; i++) {
-            recyclerViewModel.addDateTasks();
+        List<DateTasks> dates = printDatesInMonth(2018, 1);
+        for(DateTasks date: dates) {
+            recyclerViewModel.addDate(date);
         }
 
-        recyclerView.scrollToPosition(50);
+        recyclerView.scrollToPosition(1931);
+
     }
 
     private void initView(View view) {
         recyclerView = view.findViewById(R.id.listRv);
+        monthYearText = view.findViewById(R.id.monthYearText);
     }
 
     private void initObservers(View view) {
@@ -69,19 +95,29 @@ public class CalendarFragment extends Fragment {
 
     private void initRecycler() {
         dateAdapter = new DateAdapter(new DateTasksDiffItemCallback(), date -> {
-            Toast.makeText(getContext(), date.getDate(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), date.getDay()+" "+date.getMonth(), Toast.LENGTH_SHORT).show();
         });
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 7);
-//        gridLayoutManager.generateLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(dateAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                GridLayoutManager gridLayoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                try {
+                    int firstVisibleItemIndex = gridLayoutManager.findFirstCompletelyVisibleItemPosition();
+                    firstVisibleItemIndex = Math.min(firstVisibleItemIndex+7, recyclerViewModel.getDateCount()-1);
+                    DateTasks date = recyclerViewModel.getDateTasks(firstVisibleItemIndex);
+                    String newMonthYearLabel = Util.getMonthName(
+                            date.getMonth(), recyclerView.getContext())  + " " + date.getYear();
+                    monthYearText.setText(newMonthYearLabel);
+                }
+                catch (Exception e) {}
+
+            }
+        });
 
     }
-
-
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//    }
 }

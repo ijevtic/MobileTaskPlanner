@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/monthYearText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -23,49 +24,49 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/MondayShort">
+            android:text="@string/monday_short">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/TuesdayShort">
+            android:text="@string/tuesday_short">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/WednesdayShort">
+            android:text="@string/wednesday_short">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/ThursdayShort">
+            android:text="@string/thursday_short">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/FridayShort">
+            android:text="@string/friday_short">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/SaturdayShort">
+            android:text="@string/saturday_short">
         </TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/SundayShort">
+            android:text="@string/sunday_short">
         </TextView>
 
     </LinearLayout>
@@ -77,6 +78,7 @@
             android:id="@+id/listRv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/black"
             />
 
 <!--    </ScrollView>-->
