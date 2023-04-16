@@ -15,6 +15,13 @@
         android:theme="@style/Theme.MobileTaskPlanner"
         tools:targetApi="31">
         <activity
+            android:name=".view.activities.TaskPage"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".view.activities.HomePage"
             android:exported="false">
             <meta-data

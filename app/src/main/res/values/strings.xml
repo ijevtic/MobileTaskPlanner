@@ -9,7 +9,7 @@
     <string name="username_wrong_info">Username should have at least 3 characters</string>
     <string name="password_wrong_info">Password should not have any special characters (~#^|$%&amp;*!), should be of length >= 5, with at least one capital letter and at least one digit</string>
     <string name="invalid_credentials">Invalid credentials</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="monday_short">Mon</string>
@@ -32,4 +32,16 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+    <string name="show_past_obligations">Show past obligations</string>
+    <string name="low_priority_task">Low</string>
+    <string name="mid_priority_task">Mid</string>
+    <string name="high_priority_task">High</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="title">Title</string>
+    <string name="time">time</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="create">Create</string>
 </resources>

@@ -102,6 +102,7 @@ public class LoginPage extends AppCompatActivity {
     }
 
     private void initListeners() {
+//        addItems();
         login.setOnClickListener(v -> {
 
             String emailText = email.getText().toString();

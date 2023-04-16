@@ -43,8 +43,6 @@ public class Util {
 //        }
 
         return true;
-
-
     }
 
     public static String getMonthName(int month, Context context) {

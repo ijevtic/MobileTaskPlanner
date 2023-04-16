@@ -1,7 +1,7 @@
 package com.example.mobiletaskplanner.view.fragments;
 
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiletaskplanner.R;
@@ -21,16 +20,21 @@ import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.recycler.adapter.DateAdapter;
 import com.example.mobiletaskplanner.view.recycler.differ.DateTasksDiffItemCallback;
-import com.example.mobiletaskplanner.view.viewmodels.RecyclerViewModel;
+import com.example.mobiletaskplanner.view.viewmodels.CalendarRecyclerViewModel;
+import com.example.mobiletaskplanner.view.viewmodels.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+
+import timber.log.Timber;
 
 public class CalendarFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerViewModel recyclerViewModel;
+    private CalendarRecyclerViewModel recyclerViewModel;
+    private SharedViewModel sharedViewModel;
     private TextView monthYearText;
 
     private DateAdapter dateAdapter;
@@ -49,7 +53,8 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerViewModel = new ViewModelProvider(this).get(RecyclerViewModel.class);
+        recyclerViewModel = new ViewModelProvider(this).get(CalendarRecyclerViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         init(view);
 
     }
@@ -95,10 +100,12 @@ public class CalendarFragment extends Fragment {
 
     private void initRecycler() {
         dateAdapter = new DateAdapter(new DateTasksDiffItemCallback(), date -> {
-            Toast.makeText(getContext(), date.getDay()+" "+date.getMonth(), Toast.LENGTH_SHORT).show();
+            Log.e("Timber", "poslao");
+            sharedViewModel.storeSelectedDate(date);
+//            Toast.makeText(getContext(), date.getDay()+" "+date.getMonth(), Toast.LENGTH_SHORT).show();
         });
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 7);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(dateAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

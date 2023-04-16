@@ -11,6 +11,11 @@
     <color name="date_background_color">#FF018786</color>
     <color name="date_text_color">#FFFFFF</color>
 
+    <color name="task_priority_low">#A6CA96</color>
+    <color name="task_priority_medium">#D8B163</color>
+    <color name="task_priority_high">#E35A5A</color>
+
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class RecyclerViewModel extends ViewModel {
+public class CalendarRecyclerViewModel extends ViewModel {
 
     public static int counter = 0;
 
     private final MutableLiveData<List<DateTasks>> mutableLiveDataDates = new MutableLiveData<>();
     private List<DateTasks> dates = new ArrayList<>();
 
-    public RecyclerViewModel() {
+    public CalendarRecyclerViewModel() {
 //        for(int i = 0; i < 10; i++) {
 //            dates.add(new DateTasks(i, "Task " + i));
 //        }
