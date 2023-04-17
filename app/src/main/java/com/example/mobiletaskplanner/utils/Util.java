@@ -1,8 +1,12 @@
 package com.example.mobiletaskplanner.utils;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.models.Task;
+
+import java.util.Date;
 
 public class Util {
     public static boolean isValidEmail(CharSequence target) {
@@ -74,6 +78,19 @@ public class Util {
             default:
                 return "";
         }
+    }
+
+    public static String formatTime(Task task) {
+        return formatTimestamp(task.getStartTime()) + " - " + formatTimestamp(task.getEndTime());
+    }
+
+    private static String formatTimestamp(long unixTimestamp) {
+        //convert seconds to milliseconds
+        Date date = new Date(unixTimestamp * 1000L);
+        //format of the date
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        //format to a string
+        return sdf.format(date);
     }
 
 }

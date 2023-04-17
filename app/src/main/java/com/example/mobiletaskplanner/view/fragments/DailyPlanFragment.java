@@ -50,7 +50,7 @@ public class DailyPlanFragment extends Fragment {
     private TextView currentDateTv;
     private SharedViewModel sharedViewModel;
     private FloatingActionButton addTaskBtn;
-    private ActivityResultLauncher<Intent> taskAddActivityResultLauncher;
+    private ActivityResultLauncher<Intent> taskActivityResultLauncher;
 
     private TaskAdapter taskAdapter;
 
@@ -125,7 +125,10 @@ public class DailyPlanFragment extends Fragment {
 
     private void initRecycler() {
         taskAdapter = new TaskAdapter(new TaskDiffItemCallback(), task -> {
-            Toast.makeText(getContext(), task.getTitle(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), TaskPage.class);
+            intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_VIEW);
+            intent.putExtra(Constants.TASK_DATA, task);
+            taskActivityResultLauncher.launch(intent);
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
@@ -136,20 +139,26 @@ public class DailyPlanFragment extends Fragment {
 
     private void initListeners() {
 
-        taskAddActivityResultLauncher = registerForActivityResult(
+        taskActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Constants.RESULT_OK) {
-                            // There are no request codes
                             Intent data = result.getData();
-                            String taskType = data.getStringExtra(Constants.TASK_CODE);
-                            if(taskType.equals(Constants.TASK_CODE_ADD)) {
-                                Task task = (Task) data.getSerializableExtra(Constants.TASK_ACTION_TYPE_ADD);
-                                recyclerViewModel.addTask("Task 7", 7, 8, "lol");
-//                                recyclerViewModel.addTask(task);
-                                Toast.makeText(getContext(), "Task added", Toast.LENGTH_SHORT).show();
+                            String taskCode = data.getStringExtra(Constants.TASK_CODE);
+                            if(taskCode.equals(Constants.TASK_CODE_NOTHING)) {
+                                return;
+                            }
+                            Task task = (Task) data.getSerializableExtra(Constants.TASK_DATA);
+                            if(taskCode.equals(Constants.TASK_CODE_ADD)) {
+                                recyclerViewModel.addTask(task);
+                            }
+                            else if(taskCode.equals(Constants.TASK_CODE_EDIT)) {
+                                recyclerViewModel.editTask(task);
+                            }
+                            else if(taskCode.equals(Constants.TASK_CODE_REMOVE)) {
+                                recyclerViewModel.deleteTask(task.getId());
                             }
                         }
                     }
@@ -158,8 +167,7 @@ public class DailyPlanFragment extends Fragment {
         addTaskBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), TaskPage.class);
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_ADD);
-            taskAddActivityResultLauncher.launch(intent);
-//            startActivity(intent);
+            taskActivityResultLauncher.launch(intent);
 
         });
     }

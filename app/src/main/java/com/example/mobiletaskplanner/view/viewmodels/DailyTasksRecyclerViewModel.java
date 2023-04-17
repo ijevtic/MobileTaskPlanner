@@ -15,6 +15,7 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
 
     private final MutableLiveData<List<Task>> mutableLiveDataTasks = new MutableLiveData<>();
     private List<Task> tasks = new ArrayList<>();
+    private int uniqueId = 0;
 
     public DailyTasksRecyclerViewModel() {
 //        for(int i = 0; i < 10; i++) {
@@ -30,16 +31,36 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
     }
 
     public void addTask(String title, int startTime, int endTime, String description) {
-        Task task = new Task(title, startTime, endTime, description);
+        Task task = new Task(uniqueId++, title, startTime, endTime, description);
         tasks.add(task);
         ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
         mutableLiveDataTasks.setValue(listToSubmit);
     }
 
     public void addTask(Task task) {
+        task.setId(uniqueId++);
         tasks.add(task);
         ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
         mutableLiveDataTasks.setValue(listToSubmit);
+    }
+
+    public void editTask(Task task) {
+        Optional<Task> taskObject = tasks.stream().filter(task1 -> task1.getId() == task.getId()).findFirst();
+        if (taskObject.isPresent()) {
+            tasks.remove(taskObject.get());
+            tasks.add(task);
+            ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
+            mutableLiveDataTasks.setValue(listToSubmit);
+        }
+    }
+
+    public void deleteTask(int id) {
+        Optional<Task> taskObject = tasks.stream().filter(task -> task.getId() == id).findFirst();
+        if (taskObject.isPresent()) {
+            tasks.remove(taskObject.get());
+            ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
+            mutableLiveDataTasks.setValue(listToSubmit);
+        }
     }
 
 

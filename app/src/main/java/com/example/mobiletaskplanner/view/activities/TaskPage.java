@@ -32,23 +32,24 @@ public class TaskPage extends AppCompatActivity {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             String taskActionType = extras.getString(Constants.TASK_ACTION_TYPE);
             Fragment fragment = null;
+            Bundle bundle = new Bundle();
+
             if(taskActionType.equals(Constants.TASK_ACTION_TYPE_VIEW)) {
                 fragment = new ViewTaskFragment();
+                Task task = (Task) extras.getSerializable(Constants.TASK_DATA);
+                bundle.putSerializable(Constants.TASK_DATA, task);
+
             }
             else {
                 fragment = new ManageTaskFragment();
-                Bundle bundle = new Bundle();
-
                 if(taskActionType.equals(Constants.TASK_ACTION_TYPE_EDIT)) { //edit
-                    Task task = (Task) extras.getSerializable(Constants.TASK_CODE);
-                    bundle.putSerializable(Constants.TASK_CODE, task);
+                    Task task = (Task) extras.getSerializable(Constants.TASK_DATA);
+                    bundle.putSerializable(Constants.TASK_DATA, task);
                 }
                 // else add
-
-                bundle.putString(Constants.TASK_ACTION_TYPE, taskActionType);
-
-                fragment.setArguments(bundle);
             }
+            bundle.putString(Constants.TASK_ACTION_TYPE, taskActionType);
+            fragment.setArguments(bundle);
             transaction.add(R.id.taskFragment, fragment);
             transaction.commit();
         }

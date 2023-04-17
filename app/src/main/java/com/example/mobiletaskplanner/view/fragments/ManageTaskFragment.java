@@ -61,20 +61,13 @@ public class ManageTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
-//                Log.d("ManageTaskFragment", "Cancel button clicked");
             }
         });
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task task = getTaskFromInput();
-                Intent intent = new Intent();
-                intent.putExtra(Constants.TASK_CODE_EDIT, task);
-                intent.putExtra(Constants.TASK_CODE, Constants.TASK_CODE_EDIT);
-                getActivity().setResult(Constants.RESULT_OK, intent);
-                getActivity().finish();
-                Log.d("ManageTaskFragment", "Save button clicked");
+                submitTaskAndFinish(Constants.TASK_CODE_EDIT);
             }
         });
 
@@ -82,13 +75,7 @@ public class ManageTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO check overlapping, empty fields
-                Task task = getTaskFromInput();
-                Intent intent = new Intent();
-                intent.putExtra(Constants.TASK_CODE_ADD, task);
-                intent.putExtra(Constants.TASK_CODE, Constants.TASK_CODE_ADD);
-                getActivity().setResult(Constants.RESULT_OK, intent);
-                getActivity().finish();
-                Log.d("ManageTaskFragment", "Create button clicked");
+                submitTaskAndFinish(Constants.TASK_CODE_ADD);
             }
         });
 
@@ -100,7 +87,7 @@ public class ManageTaskFragment extends Fragment {
         if (args != null) {
             String value = args.getString(Constants.TASK_ACTION_TYPE);
             if(value.equals(Constants.TASK_ACTION_TYPE_EDIT)) {
-                Task task = (Task) args.getSerializable(Constants.TASK_CODE);
+                Task task = (Task) args.getSerializable(Constants.TASK_DATA);
                 saveBtn.setVisibility(View.VISIBLE);
                 createBtn.setVisibility(View.GONE);
                 taskTitle.setText(task.getTitle());
@@ -111,9 +98,16 @@ public class ManageTaskFragment extends Fragment {
                 saveBtn.setVisibility(View.GONE);
                 createBtn.setVisibility(View.VISIBLE);
             }
-            // Do something with the value
         }
+    }
 
+    private void submitTaskAndFinish(String taskCode) {
+        Task task = getTaskFromInput();
+        Intent intent = new Intent();
+        intent.putExtra(Constants.TASK_CODE, taskCode);
+        intent.putExtra(Constants.TASK_DATA, task);
+        getActivity().setResult(Constants.RESULT_OK, intent);
+        getActivity().finish();
     }
 
     private Task getTaskFromInput() {
@@ -123,9 +117,4 @@ public class ManageTaskFragment extends Fragment {
         task.setDescription(taskDescription.getText().toString());
         return task;
     }
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//    }
 }

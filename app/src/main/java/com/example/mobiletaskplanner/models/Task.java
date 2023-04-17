@@ -19,6 +19,14 @@ public class Task implements Serializable {
         this.description = description;
     }
 
+    public Task(int id, String title, int startTime, int endTime, String description) {
+        this.id = id;
+        this.title = title;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.description = description;
+    }
+
     public Task(String title, int startTime, int endTime) {
         this.title = title;
         this.startTime = startTime;
