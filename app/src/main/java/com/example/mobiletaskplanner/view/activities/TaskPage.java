@@ -3,21 +3,27 @@ package com.example.mobiletaskplanner.view.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.view.fragments.ManageTaskFragment;
 import com.example.mobiletaskplanner.view.fragments.ViewTaskFragment;
+import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
 
 public class TaskPage extends AppCompatActivity {
+
+    private EditTaskViewModel editTaskViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
+        editTaskViewModel = new ViewModelProvider(this).get(EditTaskViewModel.class);
         init();
     }
 
@@ -57,6 +63,16 @@ public class TaskPage extends AppCompatActivity {
     }
 
     private void initListeners() {
-
+        editTaskViewModel.getTaskToEdit().observe(this, task -> {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                Bundle bundle = new Bundle();
+                Fragment fragment = new ManageTaskFragment();
+                bundle.putString(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_EDIT);
+                bundle.putSerializable(Constants.TASK_DATA, task);
+//                Log.e("Timber", task.getTitle());
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.taskFragment, fragment);
+                transaction.commit();
+        });
     }
 }

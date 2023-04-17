@@ -2,17 +2,21 @@ package com.example.mobiletaskplanner.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
+import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
+import com.example.mobiletaskplanner.view.viewmodels.SharedViewModel;
 
 public class ViewTaskFragment extends Fragment {
 
@@ -24,6 +28,8 @@ public class ViewTaskFragment extends Fragment {
     private Button deleteBtn;
 
     private Task task;
+    private EditTaskViewModel editTaskViewModel;
+
 
 
     public ViewTaskFragment() {
@@ -38,6 +44,7 @@ public class ViewTaskFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        editTaskViewModel = new ViewModelProvider(requireActivity()).get(EditTaskViewModel.class);
         init();
     }
 
@@ -60,7 +67,7 @@ public class ViewTaskFragment extends Fragment {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                editTaskViewModel.storeTask(task);
             }
         });
 

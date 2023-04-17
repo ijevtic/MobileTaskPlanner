@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -18,11 +19,18 @@ import java.util.function.Consumer;
 
 public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
 
-    private final Consumer<Task> onTaskClicked;
+    public interface OnItemClickListener {
+        void onDelete(Task task);
+        void onEdit(Task task);
+    }
 
-    public TaskAdapter(@NonNull DiffUtil.ItemCallback<Task> diffCallback, Consumer<Task> onTaskClicked) {
+    private final Consumer<Task> onTaskClicked;
+    private OnItemClickListener listener;
+
+    public TaskAdapter(@NonNull DiffUtil.ItemCallback<Task> diffCallback, Consumer<Task> onTaskClicked, OnItemClickListener listener) {
         super(diffCallback);
         this.onTaskClicked = onTaskClicked;
+        this.listener = listener;
     }
 
     @NonNull
@@ -38,13 +46,17 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TaskAdapter.ViewHolder holder, int position) {
-        Task Task = getItem(position);
-        holder.bind(Task);
+        Task task = getItem(position);
+        holder.bind(task, holder, listener);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final Context context;
+        private TextView taskTv;
+        private TextView editTask;
+        private TextView deleteTask;
+        private Task task;
 
         public ViewHolder(@NonNull View itemView, Context context, Consumer<Integer> onItemClicked) {
             super(itemView);
@@ -52,13 +64,37 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
             itemView.setOnClickListener(v -> {
                 if (getBindingAdapterPosition() != RecyclerView.NO_POSITION) {
                     onItemClicked.accept(getBindingAdapterPosition());
+
                 }
             });
         }
 
-        public void bind(Task task) {
-//            Toast.makeText(context, task.getTitle(), Toast.LENGTH_SHORT).show();
-            TextView taskTv = itemView.findViewById(R.id.taskTv);
+        public void bind(Task task, @NonNull TaskAdapter.ViewHolder holder, OnItemClickListener listener) {
+            this.task = task;
+            initView();
+            initListeners(holder, listener);
+            setupView();
+        }
+
+        private void initView() {
+            taskTv = itemView.findViewById(R.id.taskTv);
+            editTask = itemView.findViewById(R.id.ti_edit_task);
+            deleteTask = itemView.findViewById(R.id.ti_delete_task);
+        }
+
+        private void initListeners(@NonNull TaskAdapter.ViewHolder holder, OnItemClickListener listener) {
+            holder.editTask.setOnClickListener(v -> {
+                listener.onEdit(task);
+            });
+
+            holder.deleteTask.setOnClickListener(v -> {
+                listener.onDelete(task);
+            });
+
+
+        }
+
+        private void setupView() {
             taskTv.setText(String.valueOf(task.getTitle()));
         }
 

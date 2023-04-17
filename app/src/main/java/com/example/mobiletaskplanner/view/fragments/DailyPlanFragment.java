@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -129,7 +130,23 @@ public class DailyPlanFragment extends Fragment {
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_VIEW);
             intent.putExtra(Constants.TASK_DATA, task);
             taskActivityResultLauncher.launch(intent);
+        }, new TaskAdapter.OnItemClickListener() {
+
+            @Override
+            public void onEdit(Task task) {
+                Toast.makeText(getContext(), task.getTitle(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), TaskPage.class);
+                intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_EDIT);
+                intent.putExtra(Constants.TASK_DATA, task);
+                taskActivityResultLauncher.launch(intent);
+            }
+
+            @Override
+            public void onDelete(Task task) {
+                recyclerViewModel.deleteTask(task.getId());
+            }
         });
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -168,8 +185,9 @@ public class DailyPlanFragment extends Fragment {
             Intent intent = new Intent(getContext(), TaskPage.class);
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_ADD);
             taskActivityResultLauncher.launch(intent);
-
         });
+
+
     }
 
 
