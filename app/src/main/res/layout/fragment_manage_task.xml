@@ -27,30 +27,36 @@
             android:background="@color/black">
 
             <TextView
+                android:id="@+id/mt_task_priority_low"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:text="@string/low_priority_task"
                 android:background="@color/task_priority_low"
+                android:paddingVertical="5dp"
                 android:layout_marginEnd="2dp">
             </TextView>
             <TextView
+                android:id="@+id/mt_task_priority_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:text="@string/mid_priority_task"
                 android:background="@color/task_priority_medium"
+                android:paddingVertical="5dp"
                 >
             </TextView>
             <TextView
+                android:id="@+id/mt_task_priority_high"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:text="@string/high_priority_task"
                 android:background="@color/task_priority_high"
+                android:paddingVertical="5dp"
                 android:layout_marginStart="2dp">
             </TextView>
 

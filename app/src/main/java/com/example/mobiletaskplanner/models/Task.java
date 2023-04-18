@@ -9,22 +9,34 @@ public class Task implements Serializable {
     private int startTime;
     private int endTime;
     private String description;
+    private TaskPriority priority;
 
     public Task() { }
 
-    public Task(String title, int startTime, int endTime, String description) {
+    public void copyTask(Task t) {
+        this.id = t.getId();
+        this.title = t.getTitle();
+        this.startTime = t.getStartTime();
+        this.endTime = t.getEndTime();
+        this.description = t.getDescription();
+        this.priority = t.getPriority();
+    }
+
+    public Task(String title, int startTime, int endTime, String description, TaskPriority priority) {
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
+        this.priority = priority;
     }
 
-    public Task(int id, String title, int startTime, int endTime, String description) {
+    public Task(int id, String title, int startTime, int endTime, String description, TaskPriority priority) {
         this.id = id;
         this.title = title;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
+        this.priority = priority;
     }
 
     public Task(String title, int startTime, int endTime) {
@@ -72,5 +84,13 @@ public class Task implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public TaskPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
     }
 }

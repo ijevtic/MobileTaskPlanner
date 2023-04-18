@@ -170,12 +170,15 @@ public class DailyPlanFragment extends Fragment {
                             Task task = (Task) data.getSerializableExtra(Constants.TASK_DATA);
                             if(taskCode.equals(Constants.TASK_CODE_ADD)) {
                                 recyclerViewModel.addTask(task);
+                                taskAdapter.notifyDataSetChanged();
                             }
                             else if(taskCode.equals(Constants.TASK_CODE_EDIT)) {
                                 recyclerViewModel.editTask(task);
+                                taskAdapter.notifyDataSetChanged();
                             }
                             else if(taskCode.equals(Constants.TASK_CODE_REMOVE)) {
                                 recyclerViewModel.deleteTask(task.getId());
+                                taskAdapter.notifyDataSetChanged();
                             }
                         }
                     }
