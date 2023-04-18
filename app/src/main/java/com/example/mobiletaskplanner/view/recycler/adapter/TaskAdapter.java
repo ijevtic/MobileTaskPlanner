@@ -5,16 +5,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.Task;
+import com.example.mobiletaskplanner.models.TaskPriority;
 
 import java.util.function.Consumer;
 
@@ -57,6 +60,7 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
         private TextView taskTv;
         private TextView editTask;
         private TextView deleteTask;
+        private ImageView taskPriority;
         private Task task;
 
         public ViewHolder(@NonNull View itemView, Context context, Consumer<Integer> onItemClicked) {
@@ -81,6 +85,7 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
             taskTv = itemView.findViewById(R.id.taskTv);
             editTask = itemView.findViewById(R.id.ti_edit_task);
             deleteTask = itemView.findViewById(R.id.ti_delete_task);
+            taskPriority = itemView.findViewById(R.id.ti_task_priority);
         }
 
         private void initListeners(@NonNull TaskAdapter.ViewHolder holder, OnItemClickListener listener) {
@@ -97,6 +102,13 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
 
         private void setupView() {
             taskTv.setText(String.valueOf(task.getTitle()));
+            int color = ContextCompat.getColor(context, R.color.task_priority_low);
+            if (task.getPriority().equals(TaskPriority.MEDIUM)) {
+                color = ContextCompat.getColor(context, R.color.task_priority_medium);
+            } else if (task.getPriority().equals(TaskPriority.HIGH)) {
+                color = ContextCompat.getColor(context, R.color.task_priority_high);
+            }
+            taskPriority.setBackgroundColor(color);
         }
 
     }

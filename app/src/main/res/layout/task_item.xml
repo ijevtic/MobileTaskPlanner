@@ -4,19 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="80dp"
     android:orientation="horizontal"
     android:layout_margin="2dp"
     android:background="@color/teal_200">
 
-    <TextView
+    <ImageView
+        android:id="@+id/ti_task_priority"
+        android:layout_marginStart="6dp"
+        android:layout_gravity="center"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        app:drawableStartCompat="@drawable/ic_menu_1" />
+        android:padding="10dp"
+        android:src="@drawable/ic_task"
+        android:background="@color/task_priority_high">
+
+    </ImageView>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_weight="2"
+        android:layout_weight="5"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView

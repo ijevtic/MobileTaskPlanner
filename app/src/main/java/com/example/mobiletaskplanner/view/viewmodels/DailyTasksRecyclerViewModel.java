@@ -10,68 +10,82 @@ import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DailyTasksRecyclerViewModel extends ViewModel {
 
     private final MutableLiveData<List<Task>> mutableLiveDataTasks = new MutableLiveData<>();
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> allTasks = new ArrayList<>();
+    private Map<TaskPriority, Boolean> priorityStates = new HashMap<>();
     private int uniqueId = 0;
 
     public DailyTasksRecyclerViewModel() {
 
-        List<Task> listToSubmit = new ArrayList<>(tasks);
+        List<Task> listToSubmit = new ArrayList<>(allTasks);
+        priorityStates.put(TaskPriority.LOW, true);
+        priorityStates.put(TaskPriority.MEDIUM, true);
+        priorityStates.put(TaskPriority.HIGH, true);
         mutableLiveDataTasks.setValue(listToSubmit);
     }
 
     public LiveData<List<Task>> getMutableLiveDataTasks() {
         return mutableLiveDataTasks;
+
     }
 
     public void addTask(String title, int startTime, int endTime, String description, TaskPriority priority) {
         Task task = new Task(uniqueId++, title, startTime, endTime, description, priority);
-        tasks.add(task);
-        ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
-        mutableLiveDataTasks.setValue(listToSubmit);
+        allTasks.add(task);
+        filterAndSubmitTasks();
     }
 
-    public int addTask(Task task) {
+    public void addTask(Task task) {
         task.setId(uniqueId++);
-        tasks.add(task);
-        ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
-        mutableLiveDataTasks.setValue(listToSubmit);
-        return tasks.size() - 1;
+        allTasks.add(task);
+        filterAndSubmitTasks();
     }
 
-    public int editTask(Task task) {
-        int taskIndex = tasks.stream().filter(task1 -> task1.getId() == task.getId()).
-                findFirst().map(tasks::indexOf).orElse(-1);
+    public void editTask(Task task) {
+        int taskIndex = allTasks.stream().filter(task1 -> task1.getId() == task.getId()).
+                findFirst().map(allTasks::indexOf).orElse(-1);
 
         if (taskIndex != -1) {
-            Task t = tasks.get(taskIndex);
+            Task t = allTasks.get(taskIndex);
             t.copyTask(task);
-            ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
-            mutableLiveDataTasks.setValue(listToSubmit);
+            filterAndSubmitTasks();
         }
-
-        return taskIndex;
     }
 
-    public int deleteTask(int id) {
-        int taskIndex = tasks.stream().filter(task -> task.getId() == id).
-                findFirst().map(tasks::indexOf).orElse(-1);
+    public void deleteTask(int id) {
+        int taskIndex = allTasks.stream().filter(task -> task.getId() == id).
+                findFirst().map(allTasks::indexOf).orElse(-1);
         if(taskIndex != -1) {
-            tasks.remove(taskIndex);
-            ArrayList<Task> listToSubmit = new ArrayList<>(tasks);
-            mutableLiveDataTasks.setValue(listToSubmit);
+            allTasks.remove(taskIndex);
+            filterAndSubmitTasks();
         }
-        return taskIndex;
+    }
+
+    public void changePriorityState(TaskPriority priority, boolean state) {
+        priorityStates.put(priority, state);
+        filterAndSubmitTasks();
+    }
+
+    private void filterAndSubmitTasks() {
+
+        ArrayList<Task> listToSubmit = allTasks.stream()
+                .filter(task -> priorityStates.get(task.getPriority()))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        mutableLiveDataTasks.setValue(listToSubmit);
     }
 
 
 
 //    public Task getDateTasks(int id) {
-//        Optional<Task> taskObject = tasks.stream().filter(dateTasks -> dateTasks.() == id).findFirst();
+//        Optional<Task> taskObject = allTasks.stream().filter(dateTasks -> dateTasks.() == id).findFirst();
 //        return dateTasksObject.orElse(null);
 //    }
 

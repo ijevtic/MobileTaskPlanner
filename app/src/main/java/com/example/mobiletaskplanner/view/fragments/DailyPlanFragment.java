@@ -1,6 +1,7 @@
 package com.example.mobiletaskplanner.view.fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
@@ -26,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
+import com.example.mobiletaskplanner.models.TaskPriority;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.activities.TaskPage;
@@ -52,6 +55,11 @@ public class DailyPlanFragment extends Fragment {
     private SharedViewModel sharedViewModel;
     private FloatingActionButton addTaskBtn;
     private ActivityResultLauncher<Intent> taskActivityResultLauncher;
+
+    private TextView taskPriorityLow;
+    private TextView taskPriorityMedium;
+    private TextView taskPriorityHigh;
+    private int priorityCounter = 3;
 
     private TaskAdapter taskAdapter;
 
@@ -111,6 +119,10 @@ public class DailyPlanFragment extends Fragment {
         recyclerView = view.findViewById(R.id.taskListRv);
         currentDateTv = view.findViewById(R.id.currentDateTv);
         addTaskBtn = view.findViewById(R.id.add_new_task_btn);
+
+        taskPriorityLow = view.findViewById(R.id.plan_task_priority_low);
+        taskPriorityMedium = view.findViewById(R.id.plan_task_priority_medium);
+        taskPriorityHigh = view.findViewById(R.id.plan_task_priority_high);
     }
 
     private void initObservers(View view) {
@@ -190,7 +202,39 @@ public class DailyPlanFragment extends Fragment {
             taskActivityResultLauncher.launch(intent);
         });
 
+        taskPriorityLow.setOnClickListener(v -> {
+            boolean newState = changePriorityView(taskPriorityLow, R.color.task_priority_low, R.color.task_priority_low_disabled);
+            recyclerViewModel.changePriorityState(TaskPriority.LOW, newState);
+            
+        });
 
+        taskPriorityMedium.setOnClickListener(v -> {
+            boolean newState = changePriorityView(taskPriorityMedium, R.color.task_priority_medium, R.color.task_priority_medium_disabled);
+            recyclerViewModel.changePriorityState(TaskPriority.MEDIUM, newState);
+        });
+
+        taskPriorityHigh.setOnClickListener(v -> {
+            boolean newState = changePriorityView(taskPriorityHigh, R.color.task_priority_high, R.color.task_priority_high_disabled);
+            recyclerViewModel.changePriorityState(TaskPriority.HIGH, newState);
+        });
+    }
+
+
+    // returns a new state
+    private boolean changePriorityView(TextView tv, int activeColor, int disabledColor) {
+        int color = ((ColorDrawable) tv.getBackground().getConstantState().newDrawable()).getColor();
+
+        if(color == ContextCompat.getColor(getContext(), disabledColor)) {
+            tv.setBackgroundColor(ContextCompat.getColor(getContext(), activeColor));
+            priorityCounter++;
+            return true;
+        }
+        if (priorityCounter == 1) {
+            return true;
+        }
+        tv.setBackgroundColor(ContextCompat.getColor(getContext(), disabledColor));
+        priorityCounter--;
+        return false;
     }
 
 
