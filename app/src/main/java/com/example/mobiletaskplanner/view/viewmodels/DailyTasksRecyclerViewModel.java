@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
 
@@ -18,16 +19,16 @@ import java.util.stream.Collectors;
 public class DailyTasksRecyclerViewModel extends ViewModel {
 
     private final MutableLiveData<List<Task>> mutableLiveDataTasks = new MutableLiveData<>();
-    private List<Task> allTasks = new ArrayList<>();
+    private DateTasks dateTasks = new DateTasks();
     private Map<TaskPriority, Boolean> priorityStates = new HashMap<>();
     private int uniqueId = 0;
 
     public DailyTasksRecyclerViewModel() {
 
-        List<Task> listToSubmit = new ArrayList<>(allTasks);
         priorityStates.put(TaskPriority.LOW, true);
         priorityStates.put(TaskPriority.MEDIUM, true);
         priorityStates.put(TaskPriority.HIGH, true);
+        List<Task> listToSubmit = new ArrayList<>(dateTasks.getTasks());
         mutableLiveDataTasks.setValue(listToSubmit);
     }
 
@@ -38,32 +39,32 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
 
     public void addTask(String title, int startTime, int endTime, String description, TaskPriority priority) {
         Task task = new Task(uniqueId++, title, startTime, endTime, description, priority);
-        allTasks.add(task);
+        dateTasks.getTasks().add(task);
         filterAndSubmitTasks();
     }
 
     public void addTask(Task task) {
         task.setId(uniqueId++);
-        allTasks.add(task);
+        dateTasks.getTasks().add(task);
         filterAndSubmitTasks();
     }
 
     public void editTask(Task task) {
-        int taskIndex = allTasks.stream().filter(task1 -> task1.getId() == task.getId()).
-                findFirst().map(allTasks::indexOf).orElse(-1);
+        int taskIndex = dateTasks.getTasks().stream().filter(task1 -> task1.getId() == task.getId()).
+                findFirst().map(dateTasks.getTasks()::indexOf).orElse(-1);
 
         if (taskIndex != -1) {
-            Task t = allTasks.get(taskIndex);
+            Task t = dateTasks.getTasks().get(taskIndex);
             t.copyTask(task);
             filterAndSubmitTasks();
         }
     }
 
     public void deleteTask(int id) {
-        int taskIndex = allTasks.stream().filter(task -> task.getId() == id).
-                findFirst().map(allTasks::indexOf).orElse(-1);
+        int taskIndex = dateTasks.getTasks().stream().filter(task -> task.getId() == id).
+                findFirst().map(dateTasks.getTasks()::indexOf).orElse(-1);
         if(taskIndex != -1) {
-            allTasks.remove(taskIndex);
+            dateTasks.getTasks().remove(taskIndex);
             filterAndSubmitTasks();
         }
     }
@@ -75,11 +76,16 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
 
     private void filterAndSubmitTasks() {
 
-        ArrayList<Task> listToSubmit = allTasks.stream()
+        ArrayList<Task> listToSubmit = dateTasks.getTasks().stream()
                 .filter(task -> priorityStates.get(task.getPriority()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         mutableLiveDataTasks.setValue(listToSubmit);
+    }
+
+    public void changeDateTasks(DateTasks dateTasks) {
+        this.dateTasks = dateTasks;
+        filterAndSubmitTasks();
     }
 
 

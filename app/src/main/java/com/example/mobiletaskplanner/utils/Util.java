@@ -4,6 +4,7 @@ import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 
 import java.util.Date;
@@ -91,6 +92,10 @@ public class Util {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         //format to a string
         return sdf.format(date);
+    }
+
+    public static String formatMonthDay(DateTasks dateTasks, Context context) {
+        return Util.getMonthName(dateTasks.getMonth(), context) + " " + dateTasks.getDay() + ". " + dateTasks.getYear();
     }
 
 }

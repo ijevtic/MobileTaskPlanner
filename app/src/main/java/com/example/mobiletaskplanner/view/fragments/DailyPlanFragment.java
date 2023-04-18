@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,32 +88,12 @@ public class DailyPlanFragment extends Fragment {
         init(view);
 
     }
-//    public static List<DateTasks> printDatesInMonth(int year, int month) {
-//        Calendar cal = Calendar.getInstance();
-//        cal.clear();
-//        cal.set(year, month - 1, 1);
-//        List<DateTasks> list = new ArrayList<>();
-//        for (int i = 0; i < 5000; i++) {
-//            list.add(new DateTasks(String.valueOf(cal.getTime()),
-//                    cal.get(Calendar.DAY_OF_MONTH),
-//                    cal.get(Calendar.MONTH)+1,
-//                    cal.get(Calendar.YEAR)));
-//            cal.add(Calendar.DAY_OF_MONTH, 1);
-//        }
-//        return list;
-//    }
 
     private void init(View view) {
         initView(view);
         initObservers(view);
         initRecycler();
         initListeners();
-
-//        List<Task> dates = printDatesInMonth(2018, 1);
-//        recyclerViewModel.addTask("Task 1", 5, 6, "lol");
-//        recyclerViewModel.addTask("Task 2", 7, 8, "lol");
-
-
     }
 
     private void initView(View view) {
@@ -132,7 +113,9 @@ public class DailyPlanFragment extends Fragment {
         sharedViewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> {
 //            currentDateTv.setText(date);
             Log.e("Timber", "primio");
-            taskAdapter.submitList(date.getTasks());
+            recyclerViewModel.changeDateTasks(date);
+            taskAdapter.notifyDataSetChanged();
+            currentDateTv.setText(Util.formatMonthDay(date, getContext()));
         });
     }
 
