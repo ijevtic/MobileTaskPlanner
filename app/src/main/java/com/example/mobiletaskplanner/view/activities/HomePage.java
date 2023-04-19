@@ -47,9 +47,9 @@ public class HomePage extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 // setCurrentItem metoda viewPager samo obavesti koji je Item trenutno aktivan i onda metoda getItem u adapteru setuje odredjeni fragment za tu poziciju
-                case R.id.navigation_1: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_CALENDAR, true); break;
-                case R.id.navigation_2: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_DAILYPLAN, true); break;
-                case R.id.navigation_3: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_PROFILE, true); break;
+                case R.id.navigation_1: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_CALENDAR, false); break;
+                case R.id.navigation_2: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_DAILYPLAN, false); break;
+                case R.id.navigation_3: viewPager.setCurrentItem(PagerAdapter.FRAGMENT_PROFILE, false); break;
             }
             return true;
         });
@@ -62,6 +62,15 @@ public class HomePage extends AppCompatActivity {
 
             // Set the selected item in the BottomNavigationView
             bottomNavigationView.setSelectedItemId(itemId);
+        });
+
+        viewPager.setOffscreenPageLimit(2);
+
+        viewPager.post(new Runnable() {
+            @Override
+            public void run() {
+//                viewPager.setCurrentItem(ViewPagerAdapter.CENTER_PAGE);
+            }
         });
 
     }

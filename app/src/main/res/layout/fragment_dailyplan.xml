@@ -33,7 +33,7 @@
                 />
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/show_past_tasks_cb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
-            android:queryHint="Search"
+            android:queryHint="@string/search"
             android:imeOptions="actionSearch"
             android:inputType="text"
             />

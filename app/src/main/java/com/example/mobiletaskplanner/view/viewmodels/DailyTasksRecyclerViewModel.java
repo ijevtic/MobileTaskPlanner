@@ -11,7 +11,9 @@ import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,8 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
     private DateTasks dateTasks = new DateTasks();
     private Map<TaskPriority, Boolean> priorityStates = new HashMap<>();
     private String searchQuery = "";
+    private boolean showPastObligations = false;
+    private int currentTimeMinutes;
     private int uniqueId = 0;
 
     public DailyTasksRecyclerViewModel() {
@@ -78,9 +82,17 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
 
     private void prepareAndSubmitTasks() {
 
+        Calendar currentTime = Calendar.getInstance();
+        int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = currentTime.get(Calendar.HOUR_OF_DAY);
+        currentTimeMinutes = currentHour * 60 + currentMinute;
+//        if(dateTasks == null)
+//            return;
+
         ArrayList<Task> listToSubmit = dateTasks.getTasks().stream()
                 .filter(task -> priorityStates.get(task.getPriority()))
                 .filter(task -> task.getTitle().toLowerCase().contains(searchQuery.toLowerCase()))
+                .filter(task -> !showPastObligations || task.getEndTimeMinutes() >= currentTimeMinutes)
                 .sorted(Task::compareTo)
                 .collect(Collectors.toCollection(ArrayList::new));
 
@@ -94,6 +106,11 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
 
     public void changeSearchQuery(String searchQuery) {
         this.searchQuery = searchQuery == null ? "" : searchQuery;
+        prepareAndSubmitTasks();
+    }
+
+    public void changePastObligationsState(boolean showPastObligations) {
+        this.showPastObligations = showPastObligations;
         prepareAndSubmitTasks();
     }
 

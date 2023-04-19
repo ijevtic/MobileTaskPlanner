@@ -5,15 +5,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.listeners.SwipeDetector;
+import com.example.mobiletaskplanner.listeners.SwipeGestureListener;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
@@ -36,6 +45,8 @@ public class ViewTaskFragment extends Fragment {
     private EditTaskViewModel editTaskViewModel;
     private TasksViewModel tasksViewModel;
 
+    private GestureDetectorCompat gestureDetector;
+
     public ViewTaskFragment() {
         super(R.layout.fragment_view_task);
     }
@@ -46,10 +57,44 @@ public class ViewTaskFragment extends Fragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_view_task, container, false);
+//        gestureDetector = new GestureDetectorCompat(getActivity(), new SwipeGestureListener(new SwipeGestureListener.OnSwipeListener() {
+//            @Override
+//            public void onSwipeLeft() {
+//                tasksViewModel.setTaskPos(tasksViewModel.getTaskPos().getValue() - 1);
+//                setupView();
+//            }
+//
+//            @Override
+//            public void onSwipeRight() {
+//                tasksViewModel.setTaskPos(tasksViewModel.getTaskPos().getValue() + 1);
+//                setupView();
+//            }
+//        }));
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return gestureDetector.onTouchEvent(event);
+//            }
+//        });
+        SwipeDetector swipeDetector = new SwipeDetector();
+        view.setOnTouchListener(swipeDetector);
+
+        if (swipeDetector.getAction() == SwipeDetector.Action.LR) {
+            Log.e("SWIPE", "LEFT TO RIGHT");
+            Toast.makeText(getActivity(), "LEFT TO RIGHT", Toast.LENGTH_SHORT).show();
+            //Do some action
+        }
+        return view;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editTaskViewModel = new ViewModelProvider(requireActivity()).get(EditTaskViewModel.class);
         tasksViewModel = new ViewModelProvider(getActivity()).get(TasksViewModel.class);
+
         init();
     }
 
@@ -98,9 +143,7 @@ public class ViewTaskFragment extends Fragment {
                 };
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage(getContext().getString(R.string.are_you_sure)).
-                        setPositiveButton(getContext().getString(R.string.yes), dialogClickListener)
-                        .setNegativeButton(getContext().getString(R.string.no), dialogClickListener).show();
+                builder.setMessage(getContext().getString(R.string.are_you_sure)).setPositiveButton(getContext().getString(R.string.yes), dialogClickListener).setNegativeButton(getContext().getString(R.string.no), dialogClickListener).show();
 
             }
         });
@@ -109,7 +152,7 @@ public class ViewTaskFragment extends Fragment {
 
     private void setupView() {
         dateTasks = tasksViewModel.getDateTasks().getValue();
-        task = tasksViewModel.getTask().getValue();
+        task = dateTasks.getTasks().get(tasksViewModel.getTaskPos().getValue());
         taskDate.setText(Util.formatMonthDay(dateTasks, getContext()));
         taskTitle.setText(task.getTitle());
         taskTime.setText(Util.formatTimeHourMinute(task));

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,7 @@ public class DailyPlanFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private DailyTasksRecyclerViewModel recyclerViewModel;
+    private CheckBox showPastTasks;
     private TextView currentDateTv;
     private SearchView searchView;
     private SharedViewModel sharedViewModel;
@@ -102,6 +104,7 @@ public class DailyPlanFragment extends Fragment {
 
     private void initView(View view) {
         searchView = view.findViewById(R.id.searchView);
+        showPastTasks = view.findViewById(R.id.show_past_tasks_cb);
         recyclerView = view.findViewById(R.id.taskListRv);
         currentDateTv = view.findViewById(R.id.currentDateTv);
         addTaskBtn = view.findViewById(R.id.add_new_task_btn);
@@ -117,6 +120,8 @@ public class DailyPlanFragment extends Fragment {
         });
 
         sharedViewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> {
+            if(date == null)
+                return;
 //            currentDateTv.setText(date);
             Log.e("Timber", "primio");
             recyclerViewModel.changeDateTasks(date);
@@ -136,14 +141,17 @@ public class DailyPlanFragment extends Fragment {
                 return false;
             }
         });
+
+        showPastTasks.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            recyclerViewModel.changePastObligationsState(isChecked);
+        });
     }
 
     private void initRecycler() {
         taskAdapter = new TaskAdapter(new TaskDiffItemCallback(), task -> {
-            Log.e("Timber", sharedViewModel.getSelectedDate().getValue() == null ? "null" : "not null");
             Intent intent = new Intent(getContext(), TaskPage.class);
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_VIEW);
-            intent.putExtra(Constants.TASK_DATA, task);
+            intent.putExtra(Constants.TASK_POS, sharedViewModel.getSelectedDate().getValue().getTasks().indexOf(task));
             intent.putExtra(Constants.DATE_DATA, sharedViewModel.getSelectedDate().getValue());
             taskActivityResultLauncher.launch(intent);
         }, new TaskAdapter.OnItemClickListener() {
@@ -153,7 +161,7 @@ public class DailyPlanFragment extends Fragment {
                 Toast.makeText(getContext(), task.getTitle(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), TaskPage.class);
                 intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_EDIT);
-                intent.putExtra(Constants.TASK_DATA, task);
+                intent.putExtra(Constants.TASK_POS, sharedViewModel.getSelectedDate().getValue().getTasks().indexOf(task));
                 intent.putExtra(Constants.DATE_DATA, sharedViewModel.getSelectedDate().getValue());
                 taskActivityResultLauncher.launch(intent);
             }

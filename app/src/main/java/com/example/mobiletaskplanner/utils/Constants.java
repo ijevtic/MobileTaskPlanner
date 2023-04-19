@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class Constants {
     public static final String IS_LOGGED_IN = "loggedIn";
+    public static final String EMAIL = "email";
+
     public static final String TASK_ACTION_TYPE = "taskActionType";
     public static final String TASK_ACTION_TYPE_ADD = "taskActionTypeAdd";
     public static final String TASK_ACTION_TYPE_EDIT = "taskActionTypeEdit";
@@ -21,6 +23,8 @@ public class Constants {
 
     public static final String TASK_DATA = "taskData";
     public static final String DATE_DATA = "dateData";
+
+    public static final String TASK_POS = "taskPos";
 
     public static final Integer RESULT_OK = 1;
     public static final Integer RESULT_CANCEL = 0;

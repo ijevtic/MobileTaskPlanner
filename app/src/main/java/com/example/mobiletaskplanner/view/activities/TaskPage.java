@@ -50,7 +50,7 @@ public class TaskPage extends AppCompatActivity {
             else {
                 fragment = new ManageTaskFragment();
             }
-            tasksViewModel.setTask((Task) extras.getSerializable(Constants.TASK_DATA));
+            tasksViewModel.setTaskPos((Integer) extras.getInt(Constants.TASK_POS));
             tasksViewModel.setDateTasks((DateTasks) extras.getSerializable(Constants.DATE_DATA));
 
             bundle.putString(Constants.TASK_ACTION_TYPE, taskActionType);

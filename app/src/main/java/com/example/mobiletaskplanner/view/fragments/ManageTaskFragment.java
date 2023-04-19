@@ -86,8 +86,6 @@ public class ManageTaskFragment extends Fragment {
         lowPriorityTv = getView().findViewById(R.id.mt_task_priority_low);
         mediumPriorityTv = getView().findViewById(R.id.mt_task_priority_medium);
         highPriorityTv = getView().findViewById(R.id.mt_task_priority_high);
-
-        Log.e("Timer", "2");
     }
 
 
@@ -156,7 +154,7 @@ public class ManageTaskFragment extends Fragment {
         String value = args.getString(Constants.TASK_ACTION_TYPE);
 
         if(value.equals(Constants.TASK_ACTION_TYPE_EDIT)) {
-            task = tasksViewModel.getTask().getValue();
+            task = dateTasks.getTasks().get(tasksViewModel.getTaskPos().getValue());
             saveBtn.setVisibility(View.VISIBLE);
             createBtn.setVisibility(View.GONE);
 

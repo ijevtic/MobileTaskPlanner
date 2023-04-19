@@ -54,4 +54,17 @@
     <string name="are_you_sure">Are you sure?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="search">Search</string>
+    <string name="change_password">Change password</string>
+    <string name="log_out">Log out</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="update_password">Update password</string>
+    <string name="invalid_old_password">Invalid old password</string>
+    <string name="invalid_new_password">Invalid new password</string>
+    <string name="password_updated_successfully">Password updated successfully</string>
+    <string name="empty_fields">Empty fields!</string>
+    <string name="passwords_cannot_be_the_name">Passwords cannot be the same!</string>
+    <string name="give_up">Give up</string>
+
 </resources>

@@ -58,7 +58,6 @@ public class LoginPage extends AppCompatActivity {
         && sharedPreferences.getBoolean(Constants.IS_LOGGED_IN, true)){
             Intent intent = new Intent(this, HomePage.class);
             startActivity(intent);
-            finish();
         }
 
         setContentView(R.layout.activity_login_page);
@@ -148,11 +147,11 @@ public class LoginPage extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean(Constants.IS_LOGGED_IN, true);
+                    editor.putString(Constants.EMAIL, email);
                     editor.apply();
 
                     Intent intent = new Intent(this, HomePage.class);
                     startActivity(intent);
-                    finish();
                 }
             }
         });

@@ -11,21 +11,21 @@ public class TasksViewModel extends ViewModel {
 
     private final MutableLiveData<DateTasks> dateTasks = new MutableLiveData<>();
 
-    private final MutableLiveData<Task> task = new MutableLiveData<>();
+    private final MutableLiveData<Integer> taskPos = new MutableLiveData<>();
 
     public LiveData<DateTasks> getDateTasks() {
         return dateTasks;
     }
 
-    public LiveData<Task> getTask() {
-        return task;
+    public LiveData<Integer> getTaskPos() {
+        return taskPos;
     }
 
     public void setDateTasks(DateTasks newValue) {
         dateTasks.setValue(newValue);
     }
 
-    public void setTask(Task newValue) {
-        task.setValue(newValue);
+    public void setTaskPos(Integer newValue) {
+        taskPos.setValue(newValue);
     }
 }

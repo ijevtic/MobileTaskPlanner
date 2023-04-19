@@ -105,7 +105,6 @@ public class CalendarFragment extends Fragment {
         recyclerView.scrollToPosition(todayIndex - 14);
 
         sharedViewModel.storeSelectedDate(recyclerViewModel.getDateTasks(todayIndex));
-
     }
 
     private void initView(View view) {
