@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class DailyPlanFragment extends Fragment {
     private RecyclerView recyclerView;
     private DailyTasksRecyclerViewModel recyclerViewModel;
     private TextView currentDateTv;
+    private SearchView searchView;
     private SharedViewModel sharedViewModel;
     private FloatingActionButton addTaskBtn;
     private ActivityResultLauncher<Intent> taskActivityResultLauncher;
@@ -99,6 +101,7 @@ public class DailyPlanFragment extends Fragment {
     }
 
     private void initView(View view) {
+        searchView = view.findViewById(R.id.searchView);
         recyclerView = view.findViewById(R.id.taskListRv);
         currentDateTv = view.findViewById(R.id.currentDateTv);
         addTaskBtn = view.findViewById(R.id.add_new_task_btn);
@@ -112,12 +115,26 @@ public class DailyPlanFragment extends Fragment {
         recyclerViewModel.getMutableLiveDataTasks().observe(getViewLifecycleOwner(), tasks -> {
             taskAdapter.submitList(tasks);
         });
+
         sharedViewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> {
 //            currentDateTv.setText(date);
             Log.e("Timber", "primio");
             recyclerViewModel.changeDateTasks(date);
             taskAdapter.notifyDataSetChanged();
             currentDateTv.setText(Util.formatMonthDay(date, getContext()));
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                recyclerViewModel.changeSearchQuery(newText);
+                return false;
+            }
         });
     }
 

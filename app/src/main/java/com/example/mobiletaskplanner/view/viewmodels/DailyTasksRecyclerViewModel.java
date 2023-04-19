@@ -22,6 +22,7 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
     private final MutableLiveData<List<Task>> mutableLiveDataTasks = new MutableLiveData<>();
     private DateTasks dateTasks = new DateTasks();
     private Map<TaskPriority, Boolean> priorityStates = new HashMap<>();
+    private String searchQuery = "";
     private int uniqueId = 0;
 
     public DailyTasksRecyclerViewModel() {
@@ -79,13 +80,20 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
 
         ArrayList<Task> listToSubmit = dateTasks.getTasks().stream()
                 .filter(task -> priorityStates.get(task.getPriority()))
+                .filter(task -> task.getTitle().toLowerCase().contains(searchQuery.toLowerCase()))
                 .sorted(Task::compareTo)
                 .collect(Collectors.toCollection(ArrayList::new));
+
         mutableLiveDataTasks.setValue(listToSubmit);
     }
 
     public void changeDateTasks(DateTasks dateTasks) {
         this.dateTasks = dateTasks;
+        prepareAndSubmitTasks();
+    }
+
+    public void changeSearchQuery(String searchQuery) {
+        this.searchQuery = searchQuery == null ? "" : searchQuery;
         prepareAndSubmitTasks();
     }
 
