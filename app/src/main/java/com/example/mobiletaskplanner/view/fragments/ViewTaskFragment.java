@@ -18,6 +18,7 @@ import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
 import com.example.mobiletaskplanner.view.viewmodels.SharedViewModel;
+import com.example.mobiletaskplanner.view.viewmodels.TasksViewModel;
 
 public class ViewTaskFragment extends Fragment {
 
@@ -31,8 +32,7 @@ public class ViewTaskFragment extends Fragment {
     private Task task;
     private DateTasks dateTasks;
     private EditTaskViewModel editTaskViewModel;
-
-
+    private TasksViewModel tasksViewModel;
 
     public ViewTaskFragment() {
         super(R.layout.fragment_view_task);
@@ -47,6 +47,7 @@ public class ViewTaskFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editTaskViewModel = new ViewModelProvider(requireActivity()).get(EditTaskViewModel.class);
+        tasksViewModel = new ViewModelProvider(getActivity()).get(TasksViewModel.class);
         init();
     }
 
@@ -88,15 +89,11 @@ public class ViewTaskFragment extends Fragment {
     }
 
     private void setupView() {
-
-        Bundle args = getArguments();
-        if (args != null) {
-            dateTasks = (DateTasks) args.getSerializable(Constants.DATE_DATA);
-            task = (Task) args.getSerializable(Constants.TASK_DATA);
-            taskDate.setText(Util.formatMonthDay(dateTasks, getContext()));
-            taskTitle.setText(task.getTitle());
-            taskTime.setText(Util.formatTimeHourMinute(task));
-            taskDescription.setText(task.getDescription());
-        }
+        dateTasks = tasksViewModel.getDateTasks().getValue();
+        task = tasksViewModel.getTask().getValue();
+        taskDate.setText(Util.formatMonthDay(dateTasks, getContext()));
+        taskTitle.setText(task.getTitle());
+        taskTime.setText(Util.formatTimeHourMinute(task));
+        taskDescription.setText(task.getDescription());
     }
 }

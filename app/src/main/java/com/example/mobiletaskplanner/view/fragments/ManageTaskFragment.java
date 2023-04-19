@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.DateTasks;
@@ -21,6 +22,7 @@ import com.example.mobiletaskplanner.models.TaskPriority;
 import com.example.mobiletaskplanner.models.TimeType;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
+import com.example.mobiletaskplanner.view.viewmodels.TasksViewModel;
 
 public class ManageTaskFragment extends Fragment {
 
@@ -45,6 +47,8 @@ public class ManageTaskFragment extends Fragment {
     private int endTimeMinute = -1;
     private TaskPriority taskPriority = TaskPriority.NONE;
 
+    private TasksViewModel tasksViewModel;
+
     public ManageTaskFragment() {
         super(R.layout.fragment_manage_task);
     }
@@ -58,6 +62,8 @@ public class ManageTaskFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tasksViewModel = new ViewModelProvider(getActivity()).get(TasksViewModel.class);
+
         init();
     }
 
@@ -82,8 +88,6 @@ public class ManageTaskFragment extends Fragment {
         highPriorityTv = getView().findViewById(R.id.mt_task_priority_high);
 
         Log.e("Timer", "2");
-
-
     }
 
 
@@ -147,35 +151,35 @@ public class ManageTaskFragment extends Fragment {
     private void setupView() {
 
         Bundle args = getArguments();
-        dateTasks = (DateTasks) args.getSerializable(Constants.DATE_DATA);
+        dateTasks = tasksViewModel.getDateTasks().getValue();
         taskDate.setText(Util.formatMonthDay(dateTasks, getContext()));
-        if (args != null) {
-            String value = args.getString(Constants.TASK_ACTION_TYPE);
-            if(value.equals(Constants.TASK_ACTION_TYPE_EDIT)) {
 
-                task = (Task) args.getSerializable(Constants.TASK_DATA);
-                saveBtn.setVisibility(View.VISIBLE);
-                createBtn.setVisibility(View.GONE);
+        String value = args.getString(Constants.TASK_ACTION_TYPE);
 
-                startTimeHour = task.getStartTimeMinutes()/60;
-                startTimeMinute = task.getStartTimeMinutes()%60;
-                endTimeHour = task.getEndTimeMinutes()/60;
-                endTimeMinute = task.getEndTimeMinutes()%60;
+        if(value.equals(Constants.TASK_ACTION_TYPE_EDIT)) {
+            task = tasksViewModel.getTask().getValue();
+            saveBtn.setVisibility(View.VISIBLE);
+            createBtn.setVisibility(View.GONE);
+
+            startTimeHour = task.getStartTimeMinutes()/60;
+            startTimeMinute = task.getStartTimeMinutes()%60;
+            endTimeHour = task.getEndTimeMinutes()/60;
+            endTimeMinute = task.getEndTimeMinutes()%60;
 
 
-                taskTitle.setText(task.getTitle());
-                taskTime.setText(Util.formatTimeHourMinute(task));
-                taskDescription.setText(task.getDescription());
+            taskTitle.setText(task.getTitle());
+            taskTime.setText(Util.formatTimeHourMinute(task));
+            taskDescription.setText(task.getDescription());
 
-                setupPriority(task.getPriority());
-            }
-            else {
-                this.task = new Task();
-                setupPriority(TaskPriority.NONE);
-                saveBtn.setVisibility(View.GONE);
-                createBtn.setVisibility(View.VISIBLE);
-            }
+            setupPriority(task.getPriority());
         }
+        else {
+            this.task = new Task();
+            setupPriority(TaskPriority.NONE);
+            saveBtn.setVisibility(View.GONE);
+            createBtn.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void submitTaskAndFinish(String taskCode) {
