@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
@@ -28,6 +29,7 @@ public class ViewTaskFragment extends Fragment {
     private Button deleteBtn;
 
     private Task task;
+    private DateTasks dateTasks;
     private EditTaskViewModel editTaskViewModel;
 
 
@@ -89,9 +91,11 @@ public class ViewTaskFragment extends Fragment {
 
         Bundle args = getArguments();
         if (args != null) {
+            dateTasks = (DateTasks) args.getSerializable(Constants.DATE_DATA);
             task = (Task) args.getSerializable(Constants.TASK_DATA);
+            taskDate.setText(Util.formatMonthDay(dateTasks, getContext()));
             taskTitle.setText(task.getTitle());
-            taskTime.setText(Util.formatTime(task));
+            taskTime.setText(Util.formatTimeHourMinute(task));
             taskDescription.setText(task.getDescription());
         }
     }

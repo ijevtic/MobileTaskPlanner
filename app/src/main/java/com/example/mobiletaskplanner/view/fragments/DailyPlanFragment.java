@@ -121,9 +121,11 @@ public class DailyPlanFragment extends Fragment {
 
     private void initRecycler() {
         taskAdapter = new TaskAdapter(new TaskDiffItemCallback(), task -> {
+            Log.e("Timber", sharedViewModel.getSelectedDate().getValue() == null ? "null" : "not null");
             Intent intent = new Intent(getContext(), TaskPage.class);
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_VIEW);
             intent.putExtra(Constants.TASK_DATA, task);
+            intent.putExtra(Constants.DATE_DATA, sharedViewModel.getSelectedDate().getValue());
             taskActivityResultLauncher.launch(intent);
         }, new TaskAdapter.OnItemClickListener() {
 
@@ -133,6 +135,7 @@ public class DailyPlanFragment extends Fragment {
                 Intent intent = new Intent(getContext(), TaskPage.class);
                 intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_EDIT);
                 intent.putExtra(Constants.TASK_DATA, task);
+                intent.putExtra(Constants.DATE_DATA, sharedViewModel.getSelectedDate().getValue());
                 taskActivityResultLauncher.launch(intent);
             }
 
@@ -183,6 +186,7 @@ public class DailyPlanFragment extends Fragment {
         addTaskBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), TaskPage.class);
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_ADD);
+            intent.putExtra(Constants.DATE_DATA, sharedViewModel.getSelectedDate().getValue());
             taskActivityResultLauncher.launch(intent);
         });
 

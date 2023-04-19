@@ -20,7 +20,7 @@ public class Constants {
     public static final String TASK_CODE_NOTHING = "taskCodeNothing";
 
     public static final String TASK_DATA = "taskData";
-
+    public static final String DATE_DATA = "dateData";
 
     public static final Integer RESULT_OK = 1;
     public static final Integer RESULT_CANCEL = 0;

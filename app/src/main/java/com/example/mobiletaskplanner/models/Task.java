@@ -2,7 +2,7 @@ package com.example.mobiletaskplanner.models;
 
 import java.io.Serializable;
 
-public class Task implements Serializable {
+public class Task implements Serializable, Comparable<Task> {
 
     private int id;
     private String title;
@@ -44,6 +44,11 @@ public class Task implements Serializable {
         this.startTimeMinutes = startTime;
         this.endTimeMinutes = endTime;
         this.description = "";
+    }
+
+    @Override
+    public int compareTo(Task t) {
+        return this.startTimeMinutes <= t.startTimeMinutes ? -1: 1;
     }
 
     public int getId() {

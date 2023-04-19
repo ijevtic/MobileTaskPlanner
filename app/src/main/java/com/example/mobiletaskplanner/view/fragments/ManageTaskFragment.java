@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
 import com.example.mobiletaskplanner.models.TimeType;
@@ -23,6 +24,7 @@ import com.example.mobiletaskplanner.utils.Util;
 
 public class ManageTaskFragment extends Fragment {
 
+    private TextView taskDate;
     private EditText taskTitle;
     private TextView taskTime;
     private EditText taskDescription;
@@ -36,6 +38,7 @@ public class ManageTaskFragment extends Fragment {
     private TextView highPriorityTv;
 
     private Task task;
+    private DateTasks dateTasks;
     private int startTimeHour = -1;
     private int startTimeMinute = -1;
     private int endTimeHour = -1;
@@ -65,6 +68,7 @@ public class ManageTaskFragment extends Fragment {
     }
 
     private void initView() {
+        taskDate = getView().findViewById(R.id.mt_task_date);
         taskTitle = getView().findViewById(R.id.mt_task_title);
         taskTime = getView().findViewById(R.id.mt_task_time);
         taskDescription = getView().findViewById(R.id.mt_task_desc);
@@ -143,17 +147,21 @@ public class ManageTaskFragment extends Fragment {
     private void setupView() {
 
         Bundle args = getArguments();
+        dateTasks = (DateTasks) args.getSerializable(Constants.DATE_DATA);
+        taskDate.setText(Util.formatMonthDay(dateTasks, getContext()));
         if (args != null) {
             String value = args.getString(Constants.TASK_ACTION_TYPE);
             if(value.equals(Constants.TASK_ACTION_TYPE_EDIT)) {
+
                 task = (Task) args.getSerializable(Constants.TASK_DATA);
                 saveBtn.setVisibility(View.VISIBLE);
                 createBtn.setVisibility(View.GONE);
-                
+
                 startTimeHour = task.getStartTimeMinutes()/60;
                 startTimeMinute = task.getStartTimeMinutes()%60;
                 endTimeHour = task.getEndTimeMinutes()/60;
                 endTimeMinute = task.getEndTimeMinutes()%60;
+
 
                 taskTitle.setText(task.getTitle());
                 taskTime.setText(Util.formatTimeHourMinute(task));

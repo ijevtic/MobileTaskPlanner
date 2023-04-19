@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.view.fragments.ManageTaskFragment;
@@ -18,6 +19,8 @@ import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
 public class TaskPage extends AppCompatActivity {
 
     private EditTaskViewModel editTaskViewModel;
+    private Task task;
+    private DateTasks dateTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +45,24 @@ public class TaskPage extends AppCompatActivity {
 
             if(taskActionType.equals(Constants.TASK_ACTION_TYPE_VIEW)) {
                 fragment = new ViewTaskFragment();
-                Task task = (Task) extras.getSerializable(Constants.TASK_DATA);
+                task = (Task) extras.getSerializable(Constants.TASK_DATA);
+
                 bundle.putSerializable(Constants.TASK_DATA, task);
+
 
             }
             else {
                 fragment = new ManageTaskFragment();
                 if(taskActionType.equals(Constants.TASK_ACTION_TYPE_EDIT)) { //edit
-                    Task task = (Task) extras.getSerializable(Constants.TASK_DATA);
+                    task = (Task) extras.getSerializable(Constants.TASK_DATA);
+
                     bundle.putSerializable(Constants.TASK_DATA, task);
                 }
                 // else add
             }
+            dateTasks = (DateTasks) extras.getSerializable(Constants.DATE_DATA);
+            bundle.putSerializable(Constants.DATE_DATA, dateTasks);
+
             bundle.putString(Constants.TASK_ACTION_TYPE, taskActionType);
             fragment.setArguments(bundle);
             transaction.add(R.id.taskFragment, fragment);
@@ -69,6 +78,7 @@ public class TaskPage extends AppCompatActivity {
                 Fragment fragment = new ManageTaskFragment();
                 bundle.putString(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_EDIT);
                 bundle.putSerializable(Constants.TASK_DATA, task);
+                bundle.putSerializable(Constants.DATE_DATA, dateTasks);
 //                Log.e("Timber", task.getTitle());
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.taskFragment, fragment);

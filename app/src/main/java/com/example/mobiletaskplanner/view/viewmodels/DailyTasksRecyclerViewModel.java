@@ -11,6 +11,7 @@ import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +41,13 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
     public void addTask(String title, int startTime, int endTime, String description, TaskPriority priority) {
         Task task = new Task(uniqueId++, title, startTime, endTime, description, priority);
         dateTasks.getTasks().add(task);
-        filterAndSubmitTasks();
+        prepareAndSubmitTasks();
     }
 
     public void addTask(Task task) {
         task.setId(uniqueId++);
         dateTasks.getTasks().add(task);
-        filterAndSubmitTasks();
+        prepareAndSubmitTasks();
     }
 
     public void editTask(Task task) {
@@ -56,7 +57,7 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
         if (taskIndex != -1) {
             Task t = dateTasks.getTasks().get(taskIndex);
             t.copyTask(task);
-            filterAndSubmitTasks();
+            prepareAndSubmitTasks();
         }
     }
 
@@ -65,27 +66,27 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
                 findFirst().map(dateTasks.getTasks()::indexOf).orElse(-1);
         if(taskIndex != -1) {
             dateTasks.getTasks().remove(taskIndex);
-            filterAndSubmitTasks();
+            prepareAndSubmitTasks();
         }
     }
 
     public void changePriorityState(TaskPriority priority, boolean state) {
         priorityStates.put(priority, state);
-        filterAndSubmitTasks();
+        prepareAndSubmitTasks();
     }
 
-    private void filterAndSubmitTasks() {
+    private void prepareAndSubmitTasks() {
 
         ArrayList<Task> listToSubmit = dateTasks.getTasks().stream()
                 .filter(task -> priorityStates.get(task.getPriority()))
+                .sorted(Task::compareTo)
                 .collect(Collectors.toCollection(ArrayList::new));
-
         mutableLiveDataTasks.setValue(listToSubmit);
     }
 
     public void changeDateTasks(DateTasks dateTasks) {
         this.dateTasks = dateTasks;
-        filterAndSubmitTasks();
+        prepareAndSubmitTasks();
     }
 
 
