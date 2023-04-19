@@ -92,9 +92,6 @@ public class ManageTaskFragment extends Fragment {
 
 
     private void initListeners() {
-
-
-
         cancelBtn.setOnClickListener(v -> {
             getActivity().finish();
         });
@@ -183,7 +180,7 @@ public class ManageTaskFragment extends Fragment {
     }
 
     private void submitTaskAndFinish(String taskCode) {
-        if(!isTaskFilled())
+        if(!isTaskFilled() || !checkTimeIntersections())
             return;
         updateTaskFromImput();
         Intent intent = new Intent();
@@ -213,6 +210,21 @@ public class ManageTaskFragment extends Fragment {
         if(startTimeHour == -1 || startTimeMinute == -1 || endTimeHour == -1 || endTimeMinute == -1) {
             Toast.makeText(requireContext(), "Time is required", Toast.LENGTH_SHORT).show();
             return false;
+        }
+        return true;
+    }
+
+    private boolean checkTimeIntersections() {
+        int timeStart = startTimeHour*60 + startTimeMinute;
+        int timeEnd = endTimeHour*60 + endTimeMinute;
+        for(Task t : dateTasks.getTasks()) {
+            if(task == t)
+                continue;
+            if((timeStart >= t.getStartTimeMinutes() && timeStart < t.getEndTimeMinutes()) ||
+                    (timeEnd > t.getStartTimeMinutes() && timeEnd <= t.getEndTimeMinutes())) {
+                Toast.makeText(requireContext(), "Time is already taken", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
         return true;
     }
