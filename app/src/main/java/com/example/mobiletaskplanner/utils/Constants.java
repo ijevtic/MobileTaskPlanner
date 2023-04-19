@@ -1,5 +1,9 @@
 package com.example.mobiletaskplanner.utils;
 
+import com.example.mobiletaskplanner.models.TaskPriority;
+
+import java.util.Map;
+
 public class Constants {
     public static final String IS_LOGGED_IN = "loggedIn";
     public static final String TASK_ACTION_TYPE = "taskActionType";

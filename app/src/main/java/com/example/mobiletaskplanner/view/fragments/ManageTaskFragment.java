@@ -3,9 +3,7 @@ package com.example.mobiletaskplanner.view.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,7 +33,6 @@ public class ManageTaskFragment extends Fragment {
 
     private Task task;
     private TaskPriority taskPriority;
-
     public ManageTaskFragment() {
         super(R.layout.fragment_manage_task);
     }
@@ -44,6 +41,7 @@ public class ManageTaskFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -69,9 +67,17 @@ public class ManageTaskFragment extends Fragment {
         lowPriorityTv = getView().findViewById(R.id.mt_task_priority_low);
         mediumPriorityTv = getView().findViewById(R.id.mt_task_priority_medium);
         highPriorityTv = getView().findViewById(R.id.mt_task_priority_high);
+
+        Log.e("Timer", "2");
+
+
     }
 
+
     private void initListeners() {
+
+
+
         cancelBtn.setOnClickListener(v -> {
             getActivity().finish();
         });
@@ -105,7 +111,8 @@ public class ManageTaskFragment extends Fragment {
                 task = (Task) args.getSerializable(Constants.TASK_DATA);
                 saveBtn.setVisibility(View.VISIBLE);
                 createBtn.setVisibility(View.GONE);
-                taskTitle.setText(task.getTitle());
+                //TODO vrati ovo
+//                taskTitle.setText(task.getTitle());
 //                taskTime.setText(String.valueOf(task.getTime()));
                 taskDescription.setText(task.getDescription());
 

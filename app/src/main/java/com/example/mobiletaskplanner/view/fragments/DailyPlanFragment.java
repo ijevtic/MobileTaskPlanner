@@ -139,6 +139,7 @@ public class DailyPlanFragment extends Fragment {
             @Override
             public void onDelete(Task task) {
                 recyclerViewModel.deleteTask(task.getId());
+                refreshView();
             }
         });
 
@@ -165,15 +166,15 @@ public class DailyPlanFragment extends Fragment {
                             Task task = (Task) data.getSerializableExtra(Constants.TASK_DATA);
                             if(taskCode.equals(Constants.TASK_CODE_ADD)) {
                                 recyclerViewModel.addTask(task);
-                                taskAdapter.notifyDataSetChanged();
+                                refreshView();
                             }
                             else if(taskCode.equals(Constants.TASK_CODE_EDIT)) {
                                 recyclerViewModel.editTask(task);
-                                taskAdapter.notifyDataSetChanged();
+                                refreshView();
                             }
                             else if(taskCode.equals(Constants.TASK_CODE_REMOVE)) {
                                 recyclerViewModel.deleteTask(task.getId());
-                                taskAdapter.notifyDataSetChanged();
+                                refreshView();
                             }
                         }
                     }
@@ -218,6 +219,11 @@ public class DailyPlanFragment extends Fragment {
         tv.setBackgroundColor(ContextCompat.getColor(getContext(), disabledColor));
         priorityCounter--;
         return false;
+    }
+
+    private void refreshView() {
+        taskAdapter.notifyDataSetChanged();
+        sharedViewModel.storeRefreshView(true);
     }
 
 

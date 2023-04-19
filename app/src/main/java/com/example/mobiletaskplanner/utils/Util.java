@@ -7,6 +7,7 @@ import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Util {
@@ -96,6 +97,12 @@ public class Util {
 
     public static String formatMonthDay(DateTasks dateTasks, Context context) {
         return Util.getMonthName(dateTasks.getMonth(), context) + " " + dateTasks.getDay() + ". " + dateTasks.getYear();
+    }
+
+    public static boolean isSameDay(Calendar calendar, DateTasks dateTasks) {
+        return calendar.get(Calendar.YEAR) == dateTasks.getYear() &&
+                calendar.get(Calendar.MONTH) + 1 == dateTasks.getMonth() &&
+                calendar.get(Calendar.DAY_OF_MONTH) == dateTasks.getDay();
     }
 
 }

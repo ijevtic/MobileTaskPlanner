@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.DateTasks;
+import com.example.mobiletaskplanner.models.TaskPriority;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.recycler.adapter.DateAdapter;
 import com.example.mobiletaskplanner.view.recycler.differ.DateTasksDiffItemCallback;
@@ -25,7 +26,10 @@ import com.example.mobiletaskplanner.view.viewmodels.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 
 import timber.log.Timber;
@@ -58,12 +62,15 @@ public class CalendarFragment extends Fragment {
         init(view);
 
     }
-    public static List<DateTasks> printDatesInMonth(int year, int month) {
+    private List<DateTasks> printDatesInMonth(int year, int month) {
         Calendar cal = Calendar.getInstance();
         cal.clear();
+
         cal.set(year, month - 1, 1);
+
         List<DateTasks> list = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
+
             list.add(new DateTasks(String.valueOf(cal.getTime()),
                     cal.get(Calendar.DAY_OF_MONTH),
                     cal.get(Calendar.MONTH)+1,
@@ -73,17 +80,32 @@ public class CalendarFragment extends Fragment {
         return list;
     }
 
+    private int getTodayIndex(List<DateTasks> dates) {
+        Calendar today = Calendar.getInstance();
+        today.setTime(today.getTime());
+        for(int i = 0; i < dates.size(); i++) {
+            if(Util.isSameDay(today, dates.get(i)))
+                return i;
+        }
+        return 0;
+    }
+
     private void init(View view) {
         initView(view);
         initObservers(view);
         initRecycler();
 
         List<DateTasks> dates = printDatesInMonth(2018, 1);
+
+        int todayIndex = getTodayIndex(dates);
+
         for(DateTasks date: dates) {
             recyclerViewModel.addDate(date);
         }
 
-        recyclerView.scrollToPosition(1931);
+        recyclerView.scrollToPosition(todayIndex - 14);
+
+        sharedViewModel.storeSelectedDate(recyclerViewModel.getDateTasks(todayIndex));
 
     }
 
@@ -96,6 +118,10 @@ public class CalendarFragment extends Fragment {
         recyclerViewModel.getMutableLiveDataDates().observe( getViewLifecycleOwner(), dates -> {
             dateAdapter.submitList(dates);
         });
+
+        sharedViewModel.getRefreshView().observe(getViewLifecycleOwner(), refreshView -> {
+            dateAdapter.notifyItemChanged(sharedViewModel.getSelectedDate().getValue().getId());
+        });
     }
 
     private void initRecycler() {
@@ -104,6 +130,7 @@ public class CalendarFragment extends Fragment {
             sharedViewModel.storeSelectedDate(date);
 //            Toast.makeText(getContext(), date.getDay()+" "+date.getMonth(), Toast.LENGTH_SHORT).show();
         });
+
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(dateAdapter);
