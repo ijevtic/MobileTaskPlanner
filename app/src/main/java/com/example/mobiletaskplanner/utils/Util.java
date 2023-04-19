@@ -83,7 +83,7 @@ public class Util {
     }
 
     public static String formatTime(Task task) {
-        return formatTimestamp(task.getStartTime()) + " - " + formatTimestamp(task.getEndTime());
+        return formatTimestamp(task.getStartTimeMinutes()) + " - " + formatTimestamp(task.getEndTimeMinutes());
     }
 
     private static String formatTimestamp(long unixTimestamp) {
@@ -103,6 +103,22 @@ public class Util {
         return calendar.get(Calendar.YEAR) == dateTasks.getYear() &&
                 calendar.get(Calendar.MONTH) + 1 == dateTasks.getMonth() &&
                 calendar.get(Calendar.DAY_OF_MONTH) == dateTasks.getDay();
+    }
+
+    public static String formatTimeHourMinute(int h1, int m1, int h2, int m2) {
+        String hour1 = h1 < 10 ? h1 == 0 ? "00"  : "0" + h1 : "" + h1;
+        String minute1 = m1 < 10 ? m1 == 0 ? "00"  : "0" + m1 : "" + m1;
+        String hour2 = h2 < 10 ? h2 == 0 ? "00"  : "0" + h2 : "" + h2;
+        String minute2 = m2 < 10 ? m2 == 0 ? "00"  : "0" + m2 : "" + m2;
+        return hour1 + ":" + minute1 + " - " + hour2 + ":" + minute2;
+    }
+
+    public static String formatTimeHourMinute(Task task) {
+        return formatTimeHourMinute(task.getStartTimeMinutes()/60,
+                task.getStartTimeMinutes()%60,
+                task.getEndTimeMinutes()/60,
+                task.getEndTimeMinutes()%60);
+
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DateTasks implements Serializable {
     private int id;
-    private int unixTime;
+    private Long unixTime;
     private int day;
     private int month;
     private int year;
@@ -22,19 +22,21 @@ public class DateTasks implements Serializable {
         this.date = date;
     }
 
-    public DateTasks(int id, String date, int day, int month, int year) {
+    public DateTasks(int id, String date, int day, int month, int year, Long unixTime) {
         this.id = id;
         this.date = date;
         this.day = day;
         this.month = month;
         this.year = year;
+        this.unixTime = unixTime;
     }
 
-    public DateTasks(String date, int day, int month, int year) {
+    public DateTasks(String date, int day, int month, int year, Long unixTime) {
         this.date = date;
         this.day = day;
         this.month = month;
         this.year = year;
+        this.unixTime = unixTime;
     }
 
     public int getId() {
@@ -49,11 +51,11 @@ public class DateTasks implements Serializable {
         this.id = id;
     }
 
-    public int getUnixTime() {
+    public Long getUnixTime() {
         return unixTime;
     }
 
-    public void setUnixTime(int unixTime) {
+    public void setUnixTime(Long unixTime) {
         this.unixTime = unixTime;
     }
 

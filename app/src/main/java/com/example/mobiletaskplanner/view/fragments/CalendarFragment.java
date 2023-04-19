@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 
 import timber.log.Timber;
 
@@ -74,7 +73,7 @@ public class CalendarFragment extends Fragment {
             list.add(new DateTasks(String.valueOf(cal.getTime()),
                     cal.get(Calendar.DAY_OF_MONTH),
                     cal.get(Calendar.MONTH)+1,
-                    cal.get(Calendar.YEAR)));
+                    cal.get(Calendar.YEAR), cal.getTimeInMillis() / 1000));
             cal.add(Calendar.DAY_OF_MONTH, 1);
         }
         return list;
@@ -119,6 +118,7 @@ public class CalendarFragment extends Fragment {
             dateAdapter.submitList(dates);
         });
 
+        //refresh calendar cell when tasks are changed
         sharedViewModel.getRefreshView().observe(getViewLifecycleOwner(), refreshView -> {
             dateAdapter.notifyItemChanged(sharedViewModel.getSelectedDate().getValue().getId());
         });

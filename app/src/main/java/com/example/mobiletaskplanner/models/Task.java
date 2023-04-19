@@ -6,8 +6,8 @@ public class Task implements Serializable {
 
     private int id;
     private String title;
-    private int startTime;
-    private int endTime;
+    private int startTimeMinutes;
+    private int endTimeMinutes;
     private String description;
     private TaskPriority priority;
 
@@ -16,16 +16,16 @@ public class Task implements Serializable {
     public void copyTask(Task t) {
         this.id = t.getId();
         this.title = t.getTitle();
-        this.startTime = t.getStartTime();
-        this.endTime = t.getEndTime();
+        this.startTimeMinutes = t.startTimeMinutes;
+        this.endTimeMinutes = t.endTimeMinutes;
         this.description = t.getDescription();
         this.priority = t.getPriority();
     }
 
     public Task(String title, int startTime, int endTime, String description, TaskPriority priority) {
         this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTimeMinutes = startTime;
+        this.endTimeMinutes = endTime;
         this.description = description;
         this.priority = priority;
     }
@@ -33,17 +33,25 @@ public class Task implements Serializable {
     public Task(int id, String title, int startTime, int endTime, String description, TaskPriority priority) {
         this.id = id;
         this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTimeMinutes = startTime;
+        this.endTimeMinutes = endTime;
         this.description = description;
         this.priority = priority;
     }
 
     public Task(String title, int startTime, int endTime) {
         this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTimeMinutes = startTime;
+        this.endTimeMinutes = endTime;
         this.description = "";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -54,20 +62,20 @@ public class Task implements Serializable {
         this.title = title;
     }
 
-    public int getStartTime() {
-        return startTime;
+    public int getStartTimeMinutes() {
+        return startTimeMinutes;
     }
 
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
+    public void setStartTimeMinutes(int startTimeMinutes) {
+        this.startTimeMinutes = startTimeMinutes;
     }
 
-    public int getEndTime() {
-        return endTime;
+    public int getEndTimeMinutes() {
+        return endTimeMinutes;
     }
 
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
+    public void setEndTimeMinutes(int endTimeMinutes) {
+        this.endTimeMinutes = endTimeMinutes;
     }
 
     public String getDescription() {
@@ -76,14 +84,6 @@ public class Task implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public TaskPriority getPriority() {

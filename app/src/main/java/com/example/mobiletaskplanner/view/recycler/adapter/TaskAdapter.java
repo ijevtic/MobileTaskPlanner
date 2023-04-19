@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
+import com.example.mobiletaskplanner.utils.Util;
 
 import java.util.function.Consumer;
 
@@ -57,9 +58,10 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final Context context;
-        private TextView taskTv;
+        private TextView taskTitle;
         private TextView editTask;
         private TextView deleteTask;
+        private TextView taskTime;
         private ImageView taskPriority;
         private Task task;
 
@@ -82,10 +84,11 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
         }
 
         private void initView() {
-            taskTv = itemView.findViewById(R.id.taskTv);
+            taskTitle = itemView.findViewById(R.id.ti_task_title);
             editTask = itemView.findViewById(R.id.ti_edit_task);
             deleteTask = itemView.findViewById(R.id.ti_delete_task);
             taskPriority = itemView.findViewById(R.id.ti_task_priority);
+            taskTime = itemView.findViewById(R.id.ti_task_time);
         }
 
         private void initListeners(@NonNull TaskAdapter.ViewHolder holder, OnItemClickListener listener) {
@@ -101,7 +104,7 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
         }
 
         private void setupView() {
-            taskTv.setText(String.valueOf(task.getTitle()));
+            taskTitle.setText(String.valueOf(task.getTitle()));
             int color = ContextCompat.getColor(context, R.color.task_priority_low);
             if (task.getPriority().equals(TaskPriority.MEDIUM)) {
                 color = ContextCompat.getColor(context, R.color.task_priority_medium);
@@ -109,6 +112,7 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
                 color = ContextCompat.getColor(context, R.color.task_priority_high);
             }
             taskPriority.setBackgroundColor(color);
+            taskTime.setText(Util.formatTimeHourMinute(task));
         }
 
     }

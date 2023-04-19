@@ -27,6 +27,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/ti_task_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,7 +37,7 @@
             android:layout_margin="10dp"
             app:layout_constraintEnd_toEndOf="parent"/>
         <TextView
-            android:id="@+id/taskTv"
+            android:id="@+id/ti_task_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TaskTitle"

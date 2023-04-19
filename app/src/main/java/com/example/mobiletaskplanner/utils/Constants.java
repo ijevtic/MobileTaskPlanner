@@ -24,4 +24,11 @@ public class Constants {
 
     public static final Integer RESULT_OK = 1;
     public static final Integer RESULT_CANCEL = 0;
+
+    public static final String TIME_TYPE = "timeType";
+
+    public static final String TIME_REQUEST_KEY = "timeRequestKey";
+    public static final String TIME_RESULT_HOUR = "timeResultHour";
+    public static final String TIME_RESULT_MINUTE = "timeResultMinute";
+
 }

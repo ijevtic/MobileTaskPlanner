@@ -15,7 +15,7 @@ public class TaskDiffItemCallback extends DiffUtil.ItemCallback<Task> {
     public boolean areContentsTheSame(@NonNull Task oldItem, @NonNull Task newItem) {
         return oldItem.getTitle().equals(newItem.getTitle()) &&
                 oldItem.getDescription().equals(newItem.getDescription()) &&
-                oldItem.getStartTime() == newItem.getStartTime() &&
-                oldItem.getEndTime() == newItem.getEndTime();
+                oldItem.getStartTimeMinutes() == newItem.getStartTimeMinutes() &&
+                oldItem.getEndTimeMinutes() == newItem.getEndTimeMinutes();
     }
 }
