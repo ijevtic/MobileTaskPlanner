@@ -134,7 +134,9 @@ public class ManageTaskFragment extends Fragment {
                 endTimeHour = hour;
                 endTimeMinute = minute;
                 if(startTimeHour*60 + startTimeMinute >= endTimeHour*60 + endTimeMinute) {
-                    Toast.makeText(requireContext(), "End time must be after start time", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(),
+                            getContext().getString(R.string.end_time_must_be_after_start_time),
+                            Toast.LENGTH_SHORT).show();
                     taskTime.setText("");
                     return;
                 }
@@ -192,11 +194,7 @@ public class ManageTaskFragment extends Fragment {
 
     private boolean isTaskFilled() {
         if(taskTitle.getText().toString().isEmpty()) {
-            Toast.makeText(requireContext(), "Title is required", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(taskTime.getText().toString().isEmpty()) {
-            Toast.makeText(requireContext(), "Time is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getContext().getString(R.string.title_is_required), Toast.LENGTH_SHORT).show();
             return false;
         }
 //        if(taskDescription.getText().toString().isEmpty()) {
@@ -204,11 +202,11 @@ public class ManageTaskFragment extends Fragment {
 //            return false;
 //        }
         if(taskPriority.equals(TaskPriority.NONE)) {
-            Toast.makeText(requireContext(), "Priority is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getContext().getString(R.string.priority_is_required), Toast.LENGTH_SHORT).show();
             return false;
         }
         if(startTimeHour == -1 || startTimeMinute == -1 || endTimeHour == -1 || endTimeMinute == -1) {
-            Toast.makeText(requireContext(), "Time is required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), getContext().getString(R.string.time_is_required), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -222,7 +220,7 @@ public class ManageTaskFragment extends Fragment {
                 continue;
             if((timeStart >= t.getStartTimeMinutes() && timeStart < t.getEndTimeMinutes()) ||
                     (timeEnd > t.getStartTimeMinutes() && timeEnd <= t.getEndTimeMinutes())) {
-                Toast.makeText(requireContext(), "Time is already taken", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), getContext().getString(R.string.time_is_already_taken), Toast.LENGTH_SHORT).show();
                 return false;
             }
         }

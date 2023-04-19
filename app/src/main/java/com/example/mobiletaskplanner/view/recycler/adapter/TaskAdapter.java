@@ -99,8 +99,6 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.ViewHolder> {
             holder.deleteTask.setOnClickListener(v -> {
                 listener.onDelete(task);
             });
-
-
         }
 
         private void setupView() {

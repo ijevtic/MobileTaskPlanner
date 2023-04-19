@@ -46,4 +46,12 @@
     <string name="create">Create</string>
     <string name="enter_start_time">Enter start time</string>
     <string name="enter_end_time">Enter end time</string>
+    <string name="title_is_required">Title is required</string>
+    <string name="time_is_required">Time is required</string>
+    <string name="priority_is_required">Priority is required</string>
+    <string name="time_is_already_taken">Time is already taken</string>
+    <string name="end_time_must_be_after_start_time">End time must be after start time</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.mobiletaskplanner.view.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -107,7 +109,7 @@ public class DailyPlanFragment extends Fragment {
     }
 
     private void initObservers(View view) {
-        recyclerViewModel.getMutableLiveDataTasks().observe( getViewLifecycleOwner(), tasks -> {
+        recyclerViewModel.getMutableLiveDataTasks().observe(getViewLifecycleOwner(), tasks -> {
             taskAdapter.submitList(tasks);
         });
         sharedViewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> {
@@ -141,8 +143,25 @@ public class DailyPlanFragment extends Fragment {
 
             @Override
             public void onDelete(Task task) {
-                recyclerViewModel.deleteTask(task.getId());
-                refreshView();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                recyclerViewModel.deleteTask(task.getId());
+                                refreshView();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage(getContext().getString(R.string.are_you_sure)).
+                        setPositiveButton(getContext().getString(R.string.yes), dialogClickListener)
+                        .setNegativeButton(getContext().getString(R.string.no), dialogClickListener).show();
             }
         });
 
@@ -163,19 +182,17 @@ public class DailyPlanFragment extends Fragment {
                         if (result.getResultCode() == Constants.RESULT_OK) {
                             Intent data = result.getData();
                             String taskCode = data.getStringExtra(Constants.TASK_CODE);
-                            if(taskCode.equals(Constants.TASK_CODE_NOTHING)) {
+                            if (taskCode.equals(Constants.TASK_CODE_NOTHING)) {
                                 return;
                             }
                             Task task = (Task) data.getSerializableExtra(Constants.TASK_DATA);
-                            if(taskCode.equals(Constants.TASK_CODE_ADD)) {
+                            if (taskCode.equals(Constants.TASK_CODE_ADD)) {
                                 recyclerViewModel.addTask(task);
                                 refreshView();
-                            }
-                            else if(taskCode.equals(Constants.TASK_CODE_EDIT)) {
+                            } else if (taskCode.equals(Constants.TASK_CODE_EDIT)) {
                                 recyclerViewModel.editTask(task);
                                 refreshView();
-                            }
-                            else if(taskCode.equals(Constants.TASK_CODE_REMOVE)) {
+                            } else if (taskCode.equals(Constants.TASK_CODE_REMOVE)) {
                                 recyclerViewModel.deleteTask(task.getId());
                                 refreshView();
                             }
@@ -193,7 +210,7 @@ public class DailyPlanFragment extends Fragment {
         taskPriorityLow.setOnClickListener(v -> {
             boolean newState = changePriorityView(taskPriorityLow, R.color.task_priority_low, R.color.task_priority_low_disabled);
             recyclerViewModel.changePriorityState(TaskPriority.LOW, newState);
-            
+
         });
 
         taskPriorityMedium.setOnClickListener(v -> {
@@ -212,7 +229,7 @@ public class DailyPlanFragment extends Fragment {
     private boolean changePriorityView(TextView tv, int activeColor, int disabledColor) {
         int color = ((ColorDrawable) tv.getBackground().getConstantState().newDrawable()).getColor();
 
-        if(color == ContextCompat.getColor(getContext(), disabledColor)) {
+        if (color == ContextCompat.getColor(getContext(), disabledColor)) {
             tv.setBackgroundColor(ContextCompat.getColor(getContext(), activeColor));
             priorityCounter++;
             return true;

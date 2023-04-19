@@ -1,5 +1,7 @@
 package com.example.mobiletaskplanner.view.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,12 +79,29 @@ public class ViewTaskFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO make popup to confirm delete
-                Intent intent = new Intent();
-                intent.putExtra(Constants.TASK_CODE, Constants.TASK_CODE_REMOVE);
-                intent.putExtra(Constants.TASK_DATA, task);
-                getActivity().setResult(Constants.RESULT_OK, intent);
-                getActivity().finish();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                Intent intent = new Intent();
+                                intent.putExtra(Constants.TASK_CODE, Constants.TASK_CODE_REMOVE);
+                                intent.putExtra(Constants.TASK_DATA, task);
+                                getActivity().setResult(Constants.RESULT_OK, intent);
+                                getActivity().finish();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage(getContext().getString(R.string.are_you_sure)).
+                        setPositiveButton(getContext().getString(R.string.yes), dialogClickListener)
+                        .setNegativeButton(getContext().getString(R.string.no), dialogClickListener).show();
+
             }
         });
 
