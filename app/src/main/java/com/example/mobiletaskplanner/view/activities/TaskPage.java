@@ -6,15 +6,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.DateTasks;
-import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.LanguageHelper;
 import com.example.mobiletaskplanner.view.fragments.ManageTaskFragment;
-import com.example.mobiletaskplanner.view.fragments.ViewTaskFragment;
 import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
 import com.example.mobiletaskplanner.view.viewmodels.TasksViewModel;
 
@@ -22,6 +19,7 @@ public class TaskPage extends AppCompatActivity {
 
     private EditTaskViewModel editTaskViewModel;
     private TasksViewModel tasksViewModel;
+    private ScreenSlidePagerActivity screenSlidePagerActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +39,27 @@ public class TaskPage extends AppCompatActivity {
     private void initFragment() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             String taskActionType = extras.getString(Constants.TASK_ACTION_TYPE);
             Fragment fragment = null;
             Bundle bundle = new Bundle();
 
+            DateTasks dateTasks = (DateTasks) extras.getSerializable(Constants.DATE_DATA);
+            int taskPos = extras.getInt(Constants.TASK_POS);
+
             if(taskActionType.equals(Constants.TASK_ACTION_TYPE_VIEW)) {
-                fragment = new ViewTaskFragment();
+                fragment = new ScreenSlidePagerActivity(dateTasks, taskPos);
             }
             else {
                 fragment = new ManageTaskFragment();
             }
-            tasksViewModel.setTaskPos((Integer) extras.getInt(Constants.TASK_POS));
-            tasksViewModel.setDateTasks((DateTasks) extras.getSerializable(Constants.DATE_DATA));
+            tasksViewModel.setTaskPos(taskPos);
+            tasksViewModel.setDateTasks(dateTasks);
 
             bundle.putString(Constants.TASK_ACTION_TYPE, taskActionType);
             fragment.setArguments(bundle);
-            transaction.add(R.id.taskFragment, fragment);
+            transaction.add(R.id.taskFragment, fragment, "fragment_tag");
             transaction.commit();
         }
 

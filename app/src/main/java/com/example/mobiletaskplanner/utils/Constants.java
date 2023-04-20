@@ -3,8 +3,10 @@ package com.example.mobiletaskplanner.utils;
 import com.example.mobiletaskplanner.models.TaskPriority;
 
 import java.util.Map;
+import java.util.Random;
 
 public class Constants {
+    public static Random rnd = new Random(50);
     public static final String IS_LOGGED_IN = "loggedIn";
     public static final String EMAIL = "email";
 

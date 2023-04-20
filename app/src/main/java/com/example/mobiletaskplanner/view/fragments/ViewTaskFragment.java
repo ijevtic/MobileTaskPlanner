@@ -28,6 +28,7 @@ import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
+import com.example.mobiletaskplanner.view.viewmodels.PagerFragmentViewModel;
 import com.example.mobiletaskplanner.view.viewmodels.SharedViewModel;
 import com.example.mobiletaskplanner.view.viewmodels.TasksViewModel;
 
@@ -44,11 +45,20 @@ public class ViewTaskFragment extends Fragment {
     private DateTasks dateTasks;
     private EditTaskViewModel editTaskViewModel;
     private TasksViewModel tasksViewModel;
+    private PagerFragmentViewModel pagerFragmentViewModel;
 
     private GestureDetectorCompat gestureDetector;
+    private int position;
+
+    PagerFragmentViewModel viewModel;
 
     public ViewTaskFragment() {
         super(R.layout.fragment_view_task);
+    }
+
+    public ViewTaskFragment(int pos) {
+        super(R.layout.fragment_view_task);
+        position = pos;
     }
 
     @Override
@@ -59,41 +69,16 @@ public class ViewTaskFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_task, container, false);
-//        gestureDetector = new GestureDetectorCompat(getActivity(), new SwipeGestureListener(new SwipeGestureListener.OnSwipeListener() {
-//            @Override
-//            public void onSwipeLeft() {
-//                tasksViewModel.setTaskPos(tasksViewModel.getTaskPos().getValue() - 1);
-//                setupView();
-//            }
-//
-//            @Override
-//            public void onSwipeRight() {
-//                tasksViewModel.setTaskPos(tasksViewModel.getTaskPos().getValue() + 1);
-//                setupView();
-//            }
-//        }));
-//        view.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return gestureDetector.onTouchEvent(event);
-//            }
-//        });
-        SwipeDetector swipeDetector = new SwipeDetector();
-        view.setOnTouchListener(swipeDetector);
-
-        if (swipeDetector.getAction() == SwipeDetector.Action.LR) {
-            Log.e("SWIPE", "LEFT TO RIGHT");
-            Toast.makeText(getActivity(), "LEFT TO RIGHT", Toast.LENGTH_SHORT).show();
-            //Do some action
-        }
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        viewModel = new ViewModelProvider(getActivity()).get(PagerFragmentViewModel.class);
         editTaskViewModel = new ViewModelProvider(requireActivity()).get(EditTaskViewModel.class);
         tasksViewModel = new ViewModelProvider(getActivity()).get(TasksViewModel.class);
+        pagerFragmentViewModel = new ViewModelProvider(getActivity()).get(PagerFragmentViewModel.class);
 
         init();
     }
@@ -118,6 +103,7 @@ public class ViewTaskFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 editTaskViewModel.storeTask(task);
+                tasksViewModel.setTaskPos(position);
             }
         });
 
@@ -151,8 +137,8 @@ public class ViewTaskFragment extends Fragment {
     }
 
     private void setupView() {
-        dateTasks = tasksViewModel.getDateTasks().getValue();
-        task = dateTasks.getTasks().get(tasksViewModel.getTaskPos().getValue());
+        dateTasks = pagerFragmentViewModel.getDateTasks().getValue();
+        task = dateTasks.getTasks().get(position);
         taskDate.setText(Util.formatMonthDay(dateTasks, getContext()));
         taskTitle.setText(task.getTitle());
         taskTime.setText(Util.formatTimeHourMinute(task));

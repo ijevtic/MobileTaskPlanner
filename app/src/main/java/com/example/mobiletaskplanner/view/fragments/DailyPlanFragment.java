@@ -236,6 +236,7 @@ public class DailyPlanFragment extends Fragment {
 //            today.set(Calendar.MILLISECOND, 0);
 //            Long unixT = today.getTimeInMillis() / 1000;
 //            List<Task> tasks = recyclerViewModel.test(unixT);
+
             Intent intent = new Intent(getContext(), TaskPage.class);
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_ADD);
             intent.putExtra(Constants.DATE_DATA, sharedViewModel.getSelectedDate().getValue());
