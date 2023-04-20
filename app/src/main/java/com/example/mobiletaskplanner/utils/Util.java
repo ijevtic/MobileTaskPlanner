@@ -6,11 +6,27 @@ import android.icu.text.SimpleDateFormat;
 import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
+import com.example.mobiletaskplanner.models.TaskPriority;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Util {
+
+    public static Map<TaskPriority, Integer> priorityIntegerMap= new HashMap<TaskPriority, Integer>() {{
+        put(TaskPriority.LOW, 1);
+        put(TaskPriority.MEDIUM, 2);
+        put(TaskPriority.HIGH, 3);
+    }};
+
+    public static Map<Integer, TaskPriority> integerPriorityMap= new HashMap<Integer, TaskPriority>() {{
+        put(1, TaskPriority.LOW);
+        put(2, TaskPriority.MEDIUM);
+        put(3, TaskPriority.HIGH);
+    }};
+
     public static boolean isValidEmail(CharSequence target) {
         if (target == null) {
             return false;

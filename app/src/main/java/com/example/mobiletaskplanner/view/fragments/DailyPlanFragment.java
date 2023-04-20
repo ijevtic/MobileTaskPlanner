@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.db.DBHelper;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
@@ -90,6 +91,7 @@ public class DailyPlanFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerViewModel = new ViewModelProvider(this).get(DailyTasksRecyclerViewModel.class);
+        recyclerViewModel.createDbHelper(getContext());
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         init(view);
 
@@ -226,6 +228,14 @@ public class DailyPlanFragment extends Fragment {
                 });
 
         addTaskBtn.setOnClickListener(v -> {
+//            Calendar today = Calendar.getInstance();
+//            today.setTime(today.getTime());
+//            today.set(Calendar.HOUR_OF_DAY, 0);
+//            today.set(Calendar.MINUTE, 0);
+//            today.set(Calendar.SECOND, 0);
+//            today.set(Calendar.MILLISECOND, 0);
+//            Long unixT = today.getTimeInMillis() / 1000;
+//            List<Task> tasks = recyclerViewModel.test(unixT);
             Intent intent = new Intent(getContext(), TaskPage.class);
             intent.putExtra(Constants.TASK_ACTION_TYPE, Constants.TASK_ACTION_TYPE_ADD);
             intent.putExtra(Constants.DATE_DATA, sharedViewModel.getSelectedDate().getValue());

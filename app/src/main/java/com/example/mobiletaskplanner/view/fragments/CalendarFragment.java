@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.db.DBHelper;
 import com.example.mobiletaskplanner.models.DateTasks;
+import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.recycler.adapter.DateAdapter;
@@ -41,6 +43,7 @@ public class CalendarFragment extends Fragment {
     private TextView monthYearText;
 
     private DateAdapter dateAdapter;
+    private DBHelper dbHelper;
 
     public CalendarFragment() {
         super(R.layout.fragment_calendar);
@@ -50,6 +53,7 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
+        dbHelper = new DBHelper(getContext());
         return rootView;
     }
 
@@ -66,15 +70,26 @@ public class CalendarFragment extends Fragment {
         cal.clear();
 
         cal.set(year, month - 1, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
 
         List<DateTasks> list = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
+            Long unixTime = cal.getTimeInMillis() / 1000;
+            List<Task> tasks = new ArrayList<>();
+            tasks = dbHelper.loadTasks(unixTime);
 
             list.add(new DateTasks(String.valueOf(cal.getTime()),
                     cal.get(Calendar.DAY_OF_MONTH),
                     cal.get(Calendar.MONTH)+1,
-                    cal.get(Calendar.YEAR), cal.getTimeInMillis() / 1000));
+                    cal.get(Calendar.YEAR), cal.getTimeInMillis() / 1000, tasks));
             cal.add(Calendar.DAY_OF_MONTH, 1);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
         }
         return list;
     }

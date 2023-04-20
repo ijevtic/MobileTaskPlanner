@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -131,8 +132,11 @@ public class LoginPage extends AppCompatActivity {
                 );
             }
 
+            Log.e("Timber", "1");
             Cursor c = getAllItems();
             if (c.moveToFirst()) {
+                Log.e("Timber", "2");
+
                 @SuppressLint("Range") String email = c.getString(
                         c.getColumnIndex(AccountContract.AccountEntry.COLUMN_NAME_EMAIL));
                 @SuppressLint("Range") String username = c.getString(
@@ -143,7 +147,7 @@ public class LoginPage extends AppCompatActivity {
                 if(!email.equals(emailText) || !username.equals(usernameText) || !password.equals(passwordText)) {
                     Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
                 } else {
-
+                    c.close();
                     SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean(Constants.IS_LOGGED_IN, true);

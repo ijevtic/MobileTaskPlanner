@@ -39,6 +39,15 @@ public class DateTasks implements Serializable {
         this.unixTime = unixTime;
     }
 
+    public DateTasks(String date, int day, int month, int year, Long unixTime, List<Task> tasks) {
+        this.date = date;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.unixTime = unixTime;
+        this.tasks = tasks;
+    }
+
     public int getId() {
         return id;
     }

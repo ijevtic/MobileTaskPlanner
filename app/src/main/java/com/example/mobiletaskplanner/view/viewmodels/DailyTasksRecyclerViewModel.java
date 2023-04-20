@@ -1,11 +1,13 @@
 package com.example.mobiletaskplanner.view.viewmodels;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mobiletaskplanner.db.DBHelper;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.models.TaskPriority;
@@ -29,6 +31,8 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
     private int currentTimeMinutes;
     private int uniqueId = 0;
 
+    private DBHelper dbHelper;
+
     public DailyTasksRecyclerViewModel() {
 
         priorityStates.put(TaskPriority.LOW, true);
@@ -40,19 +44,24 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
 
     public LiveData<List<Task>> getMutableLiveDataTasks() {
         return mutableLiveDataTasks;
+    }
 
+    public void createDbHelper(Context context) {
+        this.dbHelper = new DBHelper(context);
     }
 
     public void addTask(String title, int startTime, int endTime, String description, TaskPriority priority) {
         Task task = new Task(uniqueId++, title, startTime, endTime, description, priority);
         dateTasks.getTasks().add(task);
         prepareAndSubmitTasks();
+        saveState();
     }
 
     public void addTask(Task task) {
         task.setId(uniqueId++);
         dateTasks.getTasks().add(task);
         prepareAndSubmitTasks();
+        saveState();
     }
 
     public void editTask(Task task) {
@@ -63,6 +72,7 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
             Task t = dateTasks.getTasks().get(taskIndex);
             t.copyTask(task);
             prepareAndSubmitTasks();
+            saveState();
         }
     }
 
@@ -72,6 +82,8 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
         if(taskIndex != -1) {
             dateTasks.getTasks().remove(taskIndex);
             prepareAndSubmitTasks();
+            saveState();
+
         }
     }
 
@@ -114,24 +126,12 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
         prepareAndSubmitTasks();
     }
 
+    private void saveState() {
+        dbHelper.saveTasks(dateTasks);
+    }
 
-
-//    public Task getDateTasks(int id) {
-//        Optional<Task> taskObject = allTasks.stream().filter(dateTasks -> dateTasks.() == id).findFirst();
-//        return dateTasksObject.orElse(null);
-//    }
-
-//    public int getDateCount() {
-//        return dates.size();
-//    }
-
-//    public void removeDateTasks(int id) {
-//        Optional<Date> carObject = carList.stream().filter(car -> car.getId() == id).findFirst();
-//        if (carObject.isPresent()) {
-//            carList.remove(carObject.get());
-//            ArrayList<Car> listToSubmit = new ArrayList<>(carList);
-//            cars.setValue(listToSubmit);
-//        }
-//    }
+    public List<Task> test(Long unixTime) {
+        return dbHelper.loadTasks(unixTime);
+    }
 }
 
