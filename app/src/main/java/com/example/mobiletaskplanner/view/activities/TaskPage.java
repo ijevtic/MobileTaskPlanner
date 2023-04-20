@@ -12,6 +12,7 @@ import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
 import com.example.mobiletaskplanner.utils.Constants;
+import com.example.mobiletaskplanner.utils.LanguageHelper;
 import com.example.mobiletaskplanner.view.fragments.ManageTaskFragment;
 import com.example.mobiletaskplanner.view.fragments.ViewTaskFragment;
 import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
@@ -25,6 +26,7 @@ public class TaskPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LanguageHelper.updateLanguage(getResources());
         setContentView(R.layout.activity_task_page);
         editTaskViewModel = new ViewModelProvider(this).get(EditTaskViewModel.class);
         tasksViewModel = new ViewModelProvider(this).get(TasksViewModel.class);

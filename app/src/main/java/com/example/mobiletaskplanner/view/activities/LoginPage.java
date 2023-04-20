@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -23,8 +25,11 @@ import com.example.mobiletaskplanner.R;
 import com.example.mobiletaskplanner.db.SQLLiteConnectionHelper;
 import com.example.mobiletaskplanner.models.AccountContract;
 import com.example.mobiletaskplanner.utils.Constants;
+import com.example.mobiletaskplanner.utils.LanguageHelper;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.viewmodels.SplashViewModel;
+
+import java.util.Locale;
 
 public class LoginPage extends AppCompatActivity {
 
@@ -42,6 +47,9 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LanguageHelper.updateLanguage(getResources());
+
         splashViewModel = new ViewModelProvider(this).get(SplashViewModel.class);
         // Handle the splash screen transition.
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);

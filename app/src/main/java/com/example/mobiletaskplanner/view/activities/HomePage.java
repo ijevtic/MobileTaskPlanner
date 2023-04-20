@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.example.mobiletaskplanner.R;
+import com.example.mobiletaskplanner.utils.LanguageHelper;
 import com.example.mobiletaskplanner.view.viewmodels.SharedViewModel;
 import com.example.mobiletaskplanner.view.viewpager.PagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +28,7 @@ public class HomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LanguageHelper.updateLanguage(getResources());
         setContentView(R.layout.activity_home_page);
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         init();
