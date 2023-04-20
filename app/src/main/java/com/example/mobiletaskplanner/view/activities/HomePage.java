@@ -43,6 +43,9 @@ public class HomePage extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         bottomNavigationView = findViewById(R.id.bottomNavigation);
+        findViewById(R.id.navigation_1).setBackgroundColor(getResources().getColor(R.color.purple_700));
+        findViewById(R.id.navigation_2).setBackgroundColor(getResources().getColor(R.color.purple_700));
+        findViewById(R.id.navigation_3).setBackgroundColor(getResources().getColor(R.color.purple_700));
     }
 
     private void initListeners() {

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="purple_200">#FCE886</color>
+    <color name="purple_500">#C3AB10</color>
+    <color name="purple_700">#A19B1D</color>
+    <color name="teal_200">#72AEC5</color>
+    <color name="teal_500">#51A2C1</color>
+    <color name="teal_700">#0884B5</color>
     <color name="red_error">#FF0000</color>
 
     <color name="date_border_color">#000000</color>
-    <color name="date_background_color">#FF018786</color>
+    <color name="date_background_color">#0884B5</color>
     <color name="date_text_color">#FFFFFF</color>
 
-    <color name="task_priority_low">#6BC345</color>
-    <color name="task_priority_medium">#BF840E</color>
-    <color name="task_priority_high">#CA1212</color>
+    <color name="task_priority_low">#6AB34B</color>
+    <color name="task_priority_medium">#FBAC0D</color>
+    <color name="task_priority_high">#A63838</color>
 
     <color name="task_priority_low_disabled">#99C188</color>
-    <color name="task_priority_medium_disabled">#C1A160</color>
-    <color name="task_priority_high_disabled">#C56969</color>
+    <color name="task_priority_medium_disabled">#DAB872</color>
+    <color name="task_priority_high_disabled">#B16B6B</color>
 
 
     <color name="black">#FF000000</color>

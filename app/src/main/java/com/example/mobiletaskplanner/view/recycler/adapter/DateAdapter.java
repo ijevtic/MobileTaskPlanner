@@ -83,7 +83,8 @@ public class DateAdapter extends ListAdapter<DateTasks, DateAdapter.ViewHolder> 
                 maxPriorityColor = Math.max(maxPriorityColor, taskPriorityMap.get(task.getPriority()));
             }
 //            int bgColor = ContextCompat.getColor(context, taskColorMap.get(maxPriorityColor));
-            dateTv.setBackgroundResource(taskColorMap.get(maxPriorityColor));
+            if(maxPriorityColor > 0)
+                dateTv.setBackgroundResource(taskColorMap.get(maxPriorityColor));
         }
 
     }

@@ -104,7 +104,7 @@ public class DailyTasksRecyclerViewModel extends ViewModel {
         ArrayList<Task> listToSubmit = dateTasks.getTasks().stream()
                 .filter(task -> priorityStates.get(task.getPriority()))
                 .filter(task -> task.getTitle().toLowerCase().contains(searchQuery.toLowerCase()))
-                .filter(task -> !showPastObligations || task.getEndTimeMinutes() >= currentTimeMinutes)
+                .filter(task -> showPastObligations || task.getEndTimeMinutes() >= currentTimeMinutes)
                 .sorted(Task::compareTo)
                 .collect(Collectors.toCollection(ArrayList::new));
 

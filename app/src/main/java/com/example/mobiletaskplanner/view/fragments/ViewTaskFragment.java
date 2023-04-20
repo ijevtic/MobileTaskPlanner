@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.example.mobiletaskplanner.listeners.SwipeDetector;
 import com.example.mobiletaskplanner.listeners.SwipeGestureListener;
 import com.example.mobiletaskplanner.models.DateTasks;
 import com.example.mobiletaskplanner.models.Task;
+import com.example.mobiletaskplanner.models.TaskPriority;
 import com.example.mobiletaskplanner.utils.Constants;
 import com.example.mobiletaskplanner.utils.Util;
 import com.example.mobiletaskplanner.view.viewmodels.EditTaskViewModel;
@@ -40,6 +42,7 @@ public class ViewTaskFragment extends Fragment {
     private TextView taskDescription;
     private Button editBtn;
     private Button deleteBtn;
+    private ImageView taskTimeIcon;
 
     private Task task;
     private DateTasks dateTasks;
@@ -91,6 +94,7 @@ public class ViewTaskFragment extends Fragment {
 
     private void initView() {
         taskDate = getView().findViewById(R.id.vt_task_date);
+        taskTimeIcon = getView().findViewById(R.id.vt_task_time_icon);
         taskTitle = getView().findViewById(R.id.vt_task_title);
         taskTime = getView().findViewById(R.id.vt_task_time);
         taskDescription = getView().findViewById(R.id.vt_task_desc);
@@ -143,5 +147,11 @@ public class ViewTaskFragment extends Fragment {
         taskTitle.setText(task.getTitle());
         taskTime.setText(Util.formatTimeHourMinute(task));
         taskDescription.setText(task.getDescription());
+        if(task.getPriority().equals(TaskPriority.HIGH))
+            taskTimeIcon.setBackgroundColor(getContext().getColor(R.color.task_priority_high));
+        else if(task.getPriority().equals(TaskPriority.MEDIUM))
+            taskTimeIcon.setBackgroundColor(getContext().getColor(R.color.task_priority_medium));
+        else
+            taskTimeIcon.setBackgroundColor(getContext().getColor(R.color.task_priority_low));
     }
 }
